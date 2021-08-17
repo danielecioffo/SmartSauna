@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Ago 17, 2021 alle 15:19
+-- Creato il: Ago 17, 2021 alle 18:23
 -- Versione del server: 10.1.25-MariaDB
 -- Versione PHP: 7.1.7
 
@@ -32,7 +32,7 @@ CREATE TABLE `air_quality` (
   `id` int(11) NOT NULL,
   `node` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `concentration` float NOT NULL
+  `concentration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
