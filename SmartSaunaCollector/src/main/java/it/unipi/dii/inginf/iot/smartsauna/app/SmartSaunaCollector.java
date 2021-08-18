@@ -79,7 +79,7 @@ public class SmartSaunaCollector {
                 "5) !set_temperature <lower bound> <upper_bound> --> sets the range within which the temperature must stay\n" +
                 "6) !get_air_quality --> recovers the last CO2 concentration measurement\n" +
                 "7) !set_air_quality <upper bound> --> sets the limit below which the CO2 concentration must stay\n" +
-                "8) !set_color <color> --> sets the light color\n" +
+                "8) !set_color <color> --> sets the light color (GREEN, YELLOW or RED)\n" +
                 "9) !get_number_of_people --> retrieves the number of people inside the sauna\n" +
                 "10) !set_max_number_of_people <number> --> sets a limit on the number of people who can enter\n" +
                 "11) !exit --> terminates the program\n"
@@ -124,7 +124,8 @@ public class SmartSaunaCollector {
                     break;
                 case "!set_color":
                 case "set_color":
-                    System.out.println("\n");
+                    System.out.println("!set_color allows you to set the color of the light inside the sauna.\n" +
+                            "A parameter is required, i.e. the color, which can take three values: GREEN, YELLOW or RED. \n");
                     break;
                 case "!get_number_of_people":
                 case "get_number_of_people":
