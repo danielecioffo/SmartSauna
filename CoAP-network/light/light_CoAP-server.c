@@ -20,7 +20,8 @@
 
 #define INTERVAL_BETWEEN_CONNECTION_TESTS 1
 
-extern coap_resource_t light_switch;
+extern coap_resource_t res_light_switch;
+extern coap_resource_t res_light_color;
 static struct etimer connectivity_timer;
 
 /* Declare and auto-start this file's process */
@@ -44,7 +45,8 @@ PROCESS_THREAD(light_server, ev, data){
 	PROCESS_PAUSE();
 
 	LOG_INFO("Starting Light CoAP-Server\n");
-	coap_activate_resource(&light_switch, "light_switch"); 
+	coap_activate_resource(&res_light_switch, "light/switch"); 
+	coap_activate_resource(&res_light_color, "light/color"); 
 
 	// try to connect to the border router
 	etimer_set(&connectivity_timer, CLOCK_SECOND * INTERVAL_BETWEEN_CONNECTION_TESTS);

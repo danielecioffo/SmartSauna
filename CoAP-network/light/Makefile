@@ -1,4 +1,4 @@
-CONTIKI_PROJECT = presence
+CONTIKI_PROJECT = light
 
 all: $(CONTIKI_PROJECT)
 
