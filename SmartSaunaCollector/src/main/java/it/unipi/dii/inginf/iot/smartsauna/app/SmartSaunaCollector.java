@@ -8,8 +8,8 @@ import java.io.InputStreamReader;
 
 public class SmartSaunaCollector {
     public static void main(String[] args) {
-        ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
-        System.out.println(configurationParameters);
+        //ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
+        //System.out.println(configurationParameters);
 
         printAvailableCommands();
 
@@ -69,6 +69,23 @@ public class SmartSaunaCollector {
         }
     }
 
+    private static void printAvailableCommands() {
+        System.out.println("***************************** SMART SAUNA *****************************\n" +
+                "The following commands are available:\n" +
+                "1) !help <command> --> shows the details of a command\n" +
+                "2) !get_humidity --> recovers the last humidity measurement\n" +
+                "3) !set_humidity <lower bound> <upper bound> --> sets the range within which the humidity must stay\n" +
+                "4) !get_temperature --> recovers the last temperature measurement\n" +
+                "5) !set_temperature <lower bound> <upper_bound> --> sets the range within which the temperature must stay\n" +
+                "6) !get_air_quality --> recovers the last CO2 concentration measurement\n" +
+                "7) !set_air_quality <upper bound> --> sets the limit below which the CO2 concentration must stay\n" +
+                "8) !set_color <color> --> sets the light color\n" +
+                "9) !get_number_of_people --> retrieves the number of people inside the sauna\n" +
+                "10) !set_max_number_of_people <number> --> sets a limit on the number of people who can enter\n" +
+                "11) !exit --> terminates the program\n"
+        );
+    }
+
     private static void setMaxNumberOfPeopleFunction(String[] parts) {
 
     }
@@ -99,23 +116,6 @@ public class SmartSaunaCollector {
 
     private static void setHumidityFunction(String[] parts) {
 
-    }
-
-    private static void printAvailableCommands() {
-        System.out.println("***************************** SMART SAUNA *****************************\n" +
-                "The following commands are available:\n" +
-                "1) !help <command> --> shows the details of a command\n" +
-                "2) !get_humidity --> recovers the last humidity measurement\n" +
-                "3) !set_humidity <lower bound> <upper bound> --> sets the range within which the humidity must stay\n" +
-                "4) !get_temperature --> recovers the last temperature measurement\n" +
-                "5) !set_temperature <lower bound> <upper_bound> --> sets the range within which the temperature must stay\n" +
-                "6) !get_air_quality --> recovers the last CO2 concentration measurement\n" +
-                "7) !set_air_quality <upper bound> --> sets the limit below which the CO2 concentration must stay\n" +
-                "8) !set_color <color> --> sets the light color\n" +
-                "9) !get_number_of_people --> retrieves the number of people inside the sauna\n" +
-                "10) !set_max_number_of_people <number> --> sets a limit on the number of people who can enter\n" +
-                "11) !exit --> terminates the program\n"
-        );
     }
 
     private static void getHumidityFunction() {
