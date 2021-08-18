@@ -8,8 +8,8 @@ import java.io.InputStreamReader;
 
 public class SmartSaunaCollector {
     public static void main(String[] args) {
-        ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
-        System.out.println(configurationParameters);
+        //ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
+        //System.out.println(configurationParameters);
 
         printAvailableCommands();
 
@@ -25,7 +25,7 @@ public class SmartSaunaCollector {
 
                 switch (parts[0]) {
                     case "!help":
-                        helpFunction();
+                        helpFunction(parts);
                         break;
                     case "!get_humidity":
                         getHumidityFunction();
@@ -86,7 +86,7 @@ public class SmartSaunaCollector {
         );
     }
 
-    private static void helpFunction() {
+    private static void helpFunction(String[] parts) {
 
     }
 
