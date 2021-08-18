@@ -8,8 +8,8 @@ import java.io.InputStreamReader;
 
 public class SmartSaunaCollector {
     public static void main(String[] args) {
-        //ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
-        //System.out.println(configurationParameters);
+        ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
+        System.out.println(configurationParameters);
 
         printAvailableCommands();
 
@@ -86,23 +86,15 @@ public class SmartSaunaCollector {
         );
     }
 
-    private static void setMaxNumberOfPeopleFunction(String[] parts) {
+    private static void helpFunction() {
 
     }
 
-    private static void getNumberOfPeopleFunction() {
-        System.out.println("There are 4 people in the sauna\n");
-    }
-
-    private static void setColorFunction(String[] parts) {
+    private static void getHumidityFunction() {
 
     }
 
-    private static void setAirQualityFunction(String[] parts) {
-
-    }
-
-    private static void getAirQualityFunction() {
+    private static void setHumidityFunction(String[] parts) {
 
     }
 
@@ -114,15 +106,23 @@ public class SmartSaunaCollector {
 
     }
 
-    private static void setHumidityFunction(String[] parts) {
+    private static void getAirQualityFunction() {
 
     }
 
-    private static void getHumidityFunction() {
+    private static void setAirQualityFunction(String[] parts) {
 
     }
 
-    private static void helpFunction() {
+    private static void setColorFunction(String[] parts) {
+
+    }
+
+    private static void getNumberOfPeopleFunction() {
+
+    }
+
+    private static void setMaxNumberOfPeopleFunction(String[] parts) {
 
     }
 }
