@@ -8,8 +8,8 @@ import java.io.InputStreamReader;
 
 public class SmartSaunaCollector {
     public static void main(String[] args) {
-        //ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
-        //System.out.println(configurationParameters);
+        ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
+        System.out.println(configurationParameters);
 
         printAvailableCommands();
 
@@ -87,7 +87,63 @@ public class SmartSaunaCollector {
     }
 
     private static void helpFunction(String[] parts) {
-
+        if(parts.length != 2) {
+            System.out.println("Incorrect use of the command. Please use !help <command>\n");
+        } else {
+            switch (parts[1]) {
+                case "!help":
+                case "help":
+                    System.out.println("!help shows the details of the command passed as parameter.\n");
+                    break;
+                case "!get_humidity":
+                case "get_humidity":
+                    System.out.println("!get_humidity allows to retrieve the percentage value of humidity in the air inside the sauna.\n");
+                    break;
+                case "!set_humidity":
+                case "set_humidity":
+                    System.out.println("!set_humidity allows you to set the range within which the humidity level should be found inside the sauna.\n" +
+                            "Two parameters are required: the lower and the upper bounds.\n");
+                    break;
+                case "!get_temperature":
+                case "get_temperature":
+                    System.out.println("!get_temperature allows to retrieve the temperature inside the sauna, expressed in degrees Celsius.\n");
+                    break;
+                case "!set_temperature":
+                case "set_temperature":
+                    System.out.println("!set_temperature allows you to set the range within which the temperature should be inside the sauna.\n" +
+                            "Two parameters are required: the lower and the upper bounds.\n");
+                    break;
+                case "!get_air_quality":
+                case "get_air_quality":
+                    System.out.println("!get_air_quality allows you to retrieve the CO2 level inside the sauna, expressed in parts per million (ppm).\n");
+                    break;
+                case "!set_air_quality":
+                case "set_air_quality":
+                    System.out.println("!set_air_quality allows you to set the maximum level of CO2 that can be inside the sauna.\n" +
+                            "One parameter is required: the upper bound.\n");
+                    break;
+                case "!set_color":
+                case "set_color":
+                    System.out.println("\n");
+                    break;
+                case "!get_number_of_people":
+                case "get_number_of_people":
+                    System.out.println("!get_number_of_people allows you to retrieve the number of people who are inside the sauna.\n");
+                    break;
+                case "!set_max_number_of_people":
+                case "set_max_number_of_people":
+                    System.out.println("!set_max_number_of_people allows you to set the maximum number of people who can be inside the sauna at the same time.\n" +
+                            "One parameter is required: the maximum number of people\n");
+                    break;
+                case "!exit":
+                case "exit":
+                    System.out.println("!exit allows you to terminate the program.\n");
+                    break;
+                default:
+                    System.out.println("Command not recognized, try again\n");
+                    break;
+            }
+        }
     }
 
     private static void getHumidityFunction() {
