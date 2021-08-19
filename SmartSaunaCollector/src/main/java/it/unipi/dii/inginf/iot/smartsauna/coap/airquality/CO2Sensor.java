@@ -25,20 +25,19 @@ public class CO2Sensor {
                 String responseString = coapResponse.getResponseText();
                 co2Level.set(Integer.getInteger(responseString));
 
-                if(ventilationSystem != null) {
-                    if (co2Level.get() > 700) {   // TODO metti parametro UPPER BOUND
-                        System.out.println("CO2 level is HIGH!");
-                        if (ventilationOn) {
-                            System.out.println("The ventilation system is already on, the CO2 concentration will soon decrease...");
-                        } else {
-                            ventilationSystem.ventilationSystemSwitch(true);
-                            System.out.println("Switch ON the ventilation system");
-                        }
-                    } else if (co2Level.get()  < 700 - 0.3 * 700) {    // TODO metti parametro UPPER BOUND
-                        if (ventilationOn) {
-                            ventilationSystem.ventilationSystemSwitch(false);
-                            System.out.println("CO2 level is now fine. Switch OFF the ventilation system");
-                        }
+                if(!ventilationOn && co2Level.get() > 700) {    // TODO metti parametro UPPER BOUND
+                    if(ventilationSystem != null) {
+                        System.out.println("CO2 level is HIGH, the ventilation system is switched ON");
+                        ventilationSystem.ventilationSystemSwitch(true);
+                        ventilationOn = true;
+                    }
+                }
+
+                if (ventilationOn && co2Level.get()  < 700 - 0.3 * 700) {    // TODO metti parametro UPPER BOUND
+                    if (ventilationSystem != null) {
+                        System.out.println("CO2 level is now fine. Switch OFF the ventilation system");
+                        ventilationSystem.ventilationSystemSwitch(false);
+                        ventilationOn = false;
                     }
                 }
             }
