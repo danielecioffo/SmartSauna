@@ -1,4 +1,4 @@
-package it.unipi.dii.inginf.iot.smartsauna.coap.airquality;
+package it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality;
 
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
@@ -15,7 +15,7 @@ public class CO2Sensor {
     private boolean ventilationOn = false;
     private AtomicInteger co2Level = new AtomicInteger(300);
 
-    public void addCO2Sensor(String ip) {
+    public void registerCO2Sensor(String ip) {
         System.out.println("The CO2 sensor: [" + ip + "] + is now registered");
         clientCO2Sensor = new CoapClient("coap://[" + ip + "]/air-quality/co2");
 

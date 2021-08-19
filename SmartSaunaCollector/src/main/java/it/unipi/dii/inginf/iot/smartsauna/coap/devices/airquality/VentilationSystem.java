@@ -1,4 +1,4 @@
-package it.unipi.dii.inginf.iot.smartsauna.coap.airquality;
+package it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality;
 
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
@@ -8,7 +8,7 @@ import org.eclipse.californium.core.coap.MediaTypeRegistry;
 public class VentilationSystem {
     private CoapClient clientVentilationSystem;
 
-    public void addVentilationSystem(String ip) {
+    public void registerVentilationSystem(String ip) {
         System.out.println("The ventilation system: [" + ip + "] + is now registered");
         clientVentilationSystem = new CoapClient("coap://[" + ip + "]/air-quality/ventilation");
     }

@@ -1,4 +1,4 @@
-package it.unipi.dii.inginf.iot.smartsauna.coap.light;
+package it.unipi.dii.inginf.iot.smartsauna.coap.devices.light;
 
 import it.unipi.dii.inginf.iot.smartsauna.LightColor;
 import org.eclipse.californium.core.CoapClient;
@@ -10,7 +10,7 @@ public class Light {
     private CoapClient clientLightSwitch;
     private CoapClient clientLightColor;
 
-    public void addLight(String ip) {
+    public void registerLight(String ip) {
         System.out.println("The light: [" + ip + "] + is now registered");
         clientLightSwitch = new CoapClient("coap://[" + ip + "]/light/switch");
         clientLightColor = new CoapClient("coap://[" + ip + "]/light/color");

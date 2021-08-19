@@ -1,6 +1,6 @@
-package it.unipi.dii.inginf.iot.smartsauna.coap.presence;
+package it.unipi.dii.inginf.iot.smartsauna.coap.devices.presence;
 
-import it.unipi.dii.inginf.iot.smartsauna.coap.light.Light;
+import it.unipi.dii.inginf.iot.smartsauna.coap.devices.light.Light;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
@@ -17,7 +17,7 @@ public class PresenceSensor {
     private AtomicInteger numberOfPeople = new AtomicInteger(0);
     private boolean lightOn = false;
 
-    public void addPresenceSensor(String ip) {
+    public void registerPresenceSensor(String ip) {
         System.out.println("The presence sensor: [" + ip + "] + is now registered");
         clientPresenceSensor = new CoapClient("coap://[" + ip + "]/presence");
 
