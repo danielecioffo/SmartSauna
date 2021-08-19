@@ -15,7 +15,7 @@
 
 /* Log configuration */
 #include "sys/log.h"
-#define LOG_MODULE "App"
+#define LOG_MODULE "light"
 #define LOG_LEVEL LOG_LEVEL_APP
 
 #define INTERVAL_BETWEEN_CONNECTION_TESTS 1

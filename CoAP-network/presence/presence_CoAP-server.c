@@ -14,7 +14,7 @@
 #include "routing/routing.h"
 
 #include "sys/log.h"
-#define LOG_MODULE "App"
+#define LOG_MODULE "presence"
 #define LOG_LEVEL LOG_LEVEL_APP
 
 #define INTERVAL_BETWEEN_SIMULATIONS 3

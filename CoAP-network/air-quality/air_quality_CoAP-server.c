@@ -16,7 +16,7 @@
 
 /* Log configuration */
 #include "sys/log.h"
-#define LOG_MODULE "App"
+#define LOG_MODULE "air-quality"
 #define LOG_LEVEL LOG_LEVEL_APP
 
 #define INTERVAL_BETWEEN_SIMULATIONS 3
