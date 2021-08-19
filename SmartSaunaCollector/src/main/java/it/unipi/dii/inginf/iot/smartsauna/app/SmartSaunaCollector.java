@@ -1,16 +1,11 @@
 package it.unipi.dii.inginf.iot.smartsauna.app;
 
-import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class SmartSaunaCollector {
     public static void main(String[] args) {
-        ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
-        System.out.println(configurationParameters);
-
         printAvailableCommands();
 
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
