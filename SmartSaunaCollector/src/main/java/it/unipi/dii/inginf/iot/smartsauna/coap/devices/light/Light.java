@@ -11,7 +11,7 @@ public class Light {
     private CoapClient clientLightColor;
 
     public void registerLight(String ip) {
-        System.out.println("The light: [" + ip + "] is now registered");
+        System.out.println("[REGISTRATION] The light: [" + ip + "] is now registered");
         clientLightSwitch = new CoapClient("coap://[" + ip + "]/light/switch");
         clientLightColor = new CoapClient("coap://[" + ip + "]/light/color");
     }
@@ -36,13 +36,13 @@ public class Light {
             public void onLoad(CoapResponse coapResponse) {
                 if(coapResponse != null) {
                     if(!coapResponse.isSuccess())
-                        System.out.println("Light Switch: PUT request unsuccessful");
+                        System.out.println("[ERROR]Light Switch: PUT request unsuccessful");
                 }
             }
 
             @Override
             public void onError() {
-                System.err.println("[ERROR: Light Switch " + clientLightSwitch.getURI() + "]");
+                System.err.println("[ERROR] Light Switch " + clientLightSwitch.getURI() + "]");
             }
         }, msg, MediaTypeRegistry.TEXT_PLAIN);
 
@@ -58,12 +58,12 @@ public class Light {
             @Override
             public void onLoad(CoapResponse coapResponse) {
                 if(!coapResponse.isSuccess())
-                    System.out.println("Light Color: PUT request unsuccessful");
+                    System.out.println("[ERROR] Light Color: PUT request unsuccessful");
             }
 
             @Override
             public void onError() {
-                System.err.println("[ERROR: Light Color " + clientLightColor.getURI() + "]");
+                System.err.println("[ERROR] Light Color " + clientLightColor.getURI() + "]");
             }
         }, msg, MediaTypeRegistry.TEXT_PLAIN);
 

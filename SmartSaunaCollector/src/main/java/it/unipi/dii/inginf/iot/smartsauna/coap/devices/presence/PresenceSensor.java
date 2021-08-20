@@ -18,7 +18,7 @@ public class PresenceSensor {
     private boolean lightOn = false;
 
     public void registerPresenceSensor(String ip) {
-        System.out.println("The presence sensor: [" + ip + "] is now registered");
+        System.out.println("\n[REGISTRATION] The presence sensor [" + ip + "] is now registered\n>");
         clientPresenceSensor = new CoapClient("coap://[" + ip + "]/presence");
 
         observePresence = clientPresenceSensor.observe(new CoapHandler() {
@@ -30,12 +30,12 @@ public class PresenceSensor {
                     newNumberOfPeople = Integer.parseInt(responseString);
                     numberOfPeople.set(newNumberOfPeople);
                 } catch(Exception e) {
-                    System.out.println("PRESENCE SENSOR: non-significant data\n");
+                    System.out.println("\n[ERROR] The presence sensor gave non-significant data\n>");
                 }
 
                 if(numberOfPeople.get() > 0 && !lightOn) {
                     if(light != null) {
-                        System.out.println("There are people in the sauna, the light is switched ON");
+                        System.out.println("\n[PRESENCE] There are people in the sauna, the light is switched ON\n>");
                         light.lightSwitch(true);
                         lightOn = true;
                     }
@@ -43,7 +43,7 @@ public class PresenceSensor {
 
                 if(numberOfPeople.get() == 0 && lightOn) {
                     if(light != null) {
-                        System.out.println("The sauna is empty, the light is switched OFF");
+                        System.out.println("\n[PRESENCE] The sauna is empty, the light is switched OFF\n>");
                         light.lightSwitch(false);
                         lightOn = false;
                     }
@@ -52,7 +52,7 @@ public class PresenceSensor {
 
             @Override
             public void onError() {
-                System.err.println("[ERROR: Presence sensor" + clientPresenceSensor.getURI() + "]");
+                System.err.println("\n[ERROR] Presence sensor" + clientPresenceSensor.getURI() + "]\n>");
             }
         });
     }
