@@ -40,7 +40,8 @@ public class CoapRegistrationServer extends CoapServer {
 
             switch (deviceType) {
                 case "co2_sensor":
-                    coapDevicesHandler.registerAirQuality(ip);
+                    coapDevicesHandler.registerCO2Sensor(ip);
+                    coapDevicesHandler.registerVentilationSystem(ip);
                     break;
                 case "light":
                     coapDevicesHandler.registerLight(ip);
@@ -68,7 +69,10 @@ public class CoapRegistrationServer extends CoapServer {
 
             switch (deviceType) {
                 case "co2_sensor":
-                    coapDevicesHandler.unregisterAirQuality(ip);
+                    coapDevicesHandler.unregisterCO2Sensor(ip);
+                    break;
+                case "ventilation_system":
+                    coapDevicesHandler.unregisterVentilationSystem(ip);
                     break;
                 case "light":
                     coapDevicesHandler.unregisterLight(ip);

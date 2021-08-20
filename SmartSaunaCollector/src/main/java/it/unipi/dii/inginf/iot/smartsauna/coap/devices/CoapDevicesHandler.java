@@ -1,14 +1,12 @@
 package it.unipi.dii.inginf.iot.smartsauna.coap.devices;
 
 import it.unipi.dii.inginf.iot.smartsauna.LightColor;
-import it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality.AirQuality;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality.CO2Sensor;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality.VentilationSystem;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.light.Light;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.presence.PresenceSensor;
 
 public class CoapDevicesHandler {
-    private AirQuality airQuality = new AirQuality();
     private CO2Sensor co2Sensor = new CO2Sensor();
     private VentilationSystem ventilationSystem = new VentilationSystem();
     private Light light = new Light();
@@ -28,10 +26,6 @@ public class CoapDevicesHandler {
     }
 
     /*      REGISTER AND UNREGISTER DEVICES     */
-    public void registerAirQuality(String ip) {
-        airQuality.registerAirQuality(ip);
-    }
-
     public void registerCO2Sensor(String ip) {
         co2Sensor.registerCO2Sensor(ip);
     }
@@ -46,10 +40,6 @@ public class CoapDevicesHandler {
 
     public void registerPresenceSensor(String ip) {
         presenceSensor.registerPresenceSensor(ip);
-    }
-
-    public void unregisterAirQuality(String ip) {
-        airQuality.unregisterAirQuality(ip);
     }
 
     public void unregisterCO2Sensor(String ip) {
