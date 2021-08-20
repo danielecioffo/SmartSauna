@@ -143,31 +143,88 @@ public class SmartSaunaCollector {
     }
 
     private static void getHumidityFunction() {
-
+        // TODO leggi umidità da sensore
+        int humidity = 50;
+        System.out.println("The humidity level in the sauna is " + humidity + "%\n");
     }
 
     private static void setHumidityFunction(String[] parts) {
+        if(parts.length != 3) {
+            System.out.println("Incorrect use of the command. Please use !set_humidity <lower bound> <upper bound>\n");
+        } else {
+            int lowerBound = Integer.parseInt(parts[1]);
+            int upperBound = Integer.parseInt(parts[2]);
+            if(upperBound < lowerBound) {
+                System.out.println("ERROR: The upper bound must be larger than the lower bound\n");
+                return;
+            }
 
+            // TODO setta nuovi bound
+
+            System.out.println("Humidity range set correctly: [" + lowerBound + "% - " + upperBound + "%]\n");
+        }
     }
 
     private static void getTemperatureFunction() {
-
+        // TODO leggi temperatura da sensore
+        int temperature = 50;
+        System.out.println("The temperature in the sauna is " + temperature + "°C\n");
     }
 
     private static void setTemperatureFunction(String[] parts) {
+        if(parts.length != 3) {
+            System.out.println("Incorrect use of the command. Please use !set_temperature <lower bound> <upper bound>\n");
+        } else {
+            int lowerBound = Integer.parseInt(parts[1]);
+            int upperBound = Integer.parseInt(parts[2]);
+            if(upperBound < lowerBound) {
+                System.out.println("ERROR: The upper bound must be larger than the lower bound\n");
+                return;
+            }
 
+            // TODO setta nuovi bound
+
+            System.out.println("Temperature range set correctly: [" + lowerBound + "°C - " + upperBound + "°C]\n");
+        }
     }
 
     private static void getAirQualityFunction() {
-
+        // TODO leggi livello CO2 da sensore
+        int co2 = 400;
+        System.out.println("TThe CO2 concentration in the sauna is " + co2 + " ppm\n");
     }
 
     private static void setAirQualityFunction(String[] parts) {
+        if(parts.length != 2) {
+            System.out.println("Incorrect use of the command. Please use !set_air_quality <upper bound>\n");
+        } else {
+            int upperBound = Integer.parseInt(parts[1]);
 
+            // TODO setta nuovo bound
+
+            System.out.println("New upper bound for CO2 level set correctly:" + upperBound + " ppm\n");
+        }
     }
 
     private static void setColorFunction(String[] parts) {
-
+        if(parts.length != 2) {
+            System.out.println("Incorrect use of the command. Please use !set_color <color>\n");
+        } else {
+            switch(parts[1]) {  // TODO imposta i colori effettivamente sulla luce
+                case "GREEN":
+                    System.out.println("Light color correctly set to GREEN\n");
+                    break;
+                case "RED":
+                    System.out.println("Light color correctly set to RED\n");
+                    break;
+                case "YELLOW":
+                    System.out.println("Light color correctly set to YELLOW\n");
+                    break;
+                default:
+                    System.out.println("Invalid color, please use GREEN, YELLOW or RED\n");
+                    break;
+            }
+        }
     }
 
     private static void getNumberOfPeopleFunction() {
