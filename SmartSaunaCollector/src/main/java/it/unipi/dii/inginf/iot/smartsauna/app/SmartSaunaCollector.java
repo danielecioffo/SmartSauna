@@ -202,7 +202,7 @@ public class SmartSaunaCollector {
 
             // TODO setta nuovo bound
 
-            System.out.println("New upper bound for CO2 level set correctly:" + upperBound + " ppm\n");
+            System.out.println("New upper bound for CO2 level set correctly: " + upperBound + " ppm\n");
         }
     }
 
