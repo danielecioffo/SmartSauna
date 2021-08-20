@@ -17,7 +17,7 @@ public class AirQuality {
     private boolean ventilationOn = false;
 
     public void registerAirQuality(String ip) {
-        System.out.println("\n[REGISTRATION] The Air Quality system: [" + ip + "] is now registered\n>");
+        System.out.print("\n[REGISTRATION] The Air Quality system: [" + ip + "] is now registered\n>");
         clientCO2Sensor = new CoapClient("coap://[" + ip + "]/air_quality/co2");
         clientVentilationSystem = new CoapClient("coap://[" + ip + "]/air_quality/ventilation");
 
@@ -40,7 +40,7 @@ public class AirQuality {
                 }
 
                 if (ventilationOn && co2Level.get()  < 700 - 0.3 * 700) {    // TODO metti parametro UPPER BOUND
-                    System.out.println("\n[AIR QUALITY] CO2 level is now fine. Switch OFF the ventilation system\n>");
+                    System.out.print("\n[AIR QUALITY] CO2 level is now fine. Switch OFF the ventilation system\n>");
                     ventilationSystemSwitch(false);
                     ventilationOn = false;
                 }
@@ -48,7 +48,7 @@ public class AirQuality {
 
             @Override
             public void onError() {
-                System.err.println("\n[ERROR] Air Quality" + clientCO2Sensor.getURI() + "]\n>");
+                System.err.print("\n[ERROR] Air Quality" + clientCO2Sensor.getURI() + "]\n>");
             }
         });
     }
@@ -76,13 +76,13 @@ public class AirQuality {
             public void onLoad(CoapResponse coapResponse) {
                 if(coapResponse != null) {
                     if(!coapResponse.isSuccess())
-                        System.out.println("\n[ERROR] Ventilation System: PUT request unsuccessful\n>");
+                        System.out.print("\n[ERROR] Ventilation System: PUT request unsuccessful\n>");
                 }
             }
 
             @Override
             public void onError() {
-                System.err.println("\n[ERROR] Ventilation System " + clientVentilationSystem.getURI() + "]\n>");
+                System.err.print("\n[ERROR] Ventilation System " + clientVentilationSystem.getURI() + "]\n>");
             }
         }, msg, MediaTypeRegistry.TEXT_PLAIN);
 
