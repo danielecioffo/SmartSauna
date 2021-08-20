@@ -11,7 +11,7 @@ public class Light {
     private CoapClient clientLightColor;
 
     public void registerLight(String ip) {
-        System.out.println("The light: [" + ip + "] + is now registered");
+        System.out.println("The light: [" + ip + "] is now registered");
         clientLightSwitch = new CoapClient("coap://[" + ip + "]/light/switch");
         clientLightColor = new CoapClient("coap://[" + ip + "]/light/color");
     }

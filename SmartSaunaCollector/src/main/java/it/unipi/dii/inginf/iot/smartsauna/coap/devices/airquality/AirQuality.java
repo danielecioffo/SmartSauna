@@ -17,7 +17,7 @@ public class AirQuality {
     private boolean ventilationOn = false;
 
     public void registerAirQuality(String ip) {
-        System.out.println("The Air Quality system: [" + ip + "] + is now registered");
+        System.out.println("The Air Quality system: [" + ip + "] is now registered");
         clientCO2Sensor = new CoapClient("coap://[" + ip + "]/air-quality/co2");
         clientVentilationSystem = new CoapClient("coap://[" + ip + "]/air-quality/ventilation");
 

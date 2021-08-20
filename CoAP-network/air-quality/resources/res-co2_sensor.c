@@ -48,7 +48,7 @@ static void co2_event_handler(void) {
 	if (update_co2()) { // if the value is changed
 		LOG_INFO("CO2 level: %u ppm\n", co2_level);
 		// Notify all the observers
-    		coap_notify_observers(&res_co2_sensor);	
+    	coap_notify_observers(&res_co2_sensor);
 	}
 }
 

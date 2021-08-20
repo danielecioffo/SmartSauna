@@ -18,7 +18,7 @@ public class PresenceSensor {
     private boolean lightOn = false;
 
     public void registerPresenceSensor(String ip) {
-        System.out.println("The presence sensor: [" + ip + "] + is now registered");
+        System.out.println("The presence sensor: [" + ip + "] is now registered");
         clientPresenceSensor = new CoapClient("coap://[" + ip + "]/presence");
 
         observePresence = clientPresenceSensor.observe(new CoapHandler() {
