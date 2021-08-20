@@ -16,6 +16,14 @@ public class CoapRegistrationServer extends CoapServer {
         this.add(new CoapRegistrationResource());
     }
 
+    // GET measures from sensors
+    public int getCO2Level() {
+        return coapDevicesHandler.getCO2Level();
+    }
+
+    // SET
+    //----
+
     class CoapRegistrationResource extends CoapResource {
         public CoapRegistrationResource() {
             super("registration");

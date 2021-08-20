@@ -24,6 +24,7 @@ public class CoapDevicesHandler {
         return instance;
     }
 
+    /*      REGISTER AND UNREGISTER DEVICES     */
     public void registerCO2Sensor(String ip) {
         co2Sensor.registerCO2Sensor(ip);
     }
@@ -56,5 +57,15 @@ public class CoapDevicesHandler {
         presenceSensor.unregisterPresenceSensor(ip);
     }
 
-    // TODO get e set
+    /*      GET MEASURES FROM SENSORS     */
+    public int getCO2Level() {
+        return co2Sensor.getCO2Level();
+    }
+
+    public int getNumberOfPeople() {
+        return presenceSensor.getNumberOfPeople();
+    }
+
+    /*      GET MEASURES FROM SENSORS     */
+
 }

@@ -1,11 +1,17 @@
 package it.unipi.dii.inginf.iot.smartsauna.app;
 
+import it.unipi.dii.inginf.iot.smartsauna.coap.CoapRegistrationServer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.SocketException;
 
 public class SmartSaunaCollector {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SocketException {
+        CoapRegistrationServer coapRegistrationServer = new CoapRegistrationServer();
+        coapRegistrationServer.start();
+
         printAvailableCommands();
 
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -23,7 +29,7 @@ public class SmartSaunaCollector {
                         helpFunction(parts);
                         break;
                     case "!get_humidity":
-                        getHumidityFunction();
+                        getHumidityFunction(coapRegistrationServer);
                         break;
                     case "!set_humidity":
                         setHumidityFunction(parts);
@@ -35,7 +41,7 @@ public class SmartSaunaCollector {
                         setTemperatureFunction(parts);
                         break;
                     case "!get_air_quality":
-                        getAirQualityFunction();
+                        getAirQualityFunction(coapRegistrationServer);
                         break;
                     case "!set_air_quality":
                         setAirQualityFunction(parts);
@@ -142,7 +148,7 @@ public class SmartSaunaCollector {
         }
     }
 
-    private static void getHumidityFunction() {
+    private static void getHumidityFunction(CoapRegistrationServer coapRegistrationServer) {
         // TODO leggi umidità da sensore
         int humidity = 50;
         System.out.println("The humidity level in the sauna is " + humidity + "%\n");
@@ -152,16 +158,20 @@ public class SmartSaunaCollector {
         if(parts.length != 3) {
             System.out.println("Incorrect use of the command. Please use !set_humidity <lower bound> <upper bound>\n");
         } else {
-            int lowerBound = Integer.parseInt(parts[1]);
-            int upperBound = Integer.parseInt(parts[2]);
-            if(upperBound < lowerBound) {
-                System.out.println("ERROR: The upper bound must be larger than the lower bound\n");
-                return;
+            int lowerBound;
+            int upperBound;
+            try {
+                lowerBound = Integer.parseInt(parts[1]);
+                upperBound = Integer.parseInt(parts[2]);
+                if (upperBound < lowerBound) {
+                    System.out.println("ERROR: The upper bound must be larger than the lower bound\n");
+                    return;
+                }
+                // TODO setta nuovi bound
+                System.out.println("Humidity range set correctly: [" + lowerBound + "% - " + upperBound + "%]\n");
+            } catch(Exception e) {
+                System.out.println("Please enter integer values\n");
             }
-
-            // TODO setta nuovi bound
-
-            System.out.println("Humidity range set correctly: [" + lowerBound + "% - " + upperBound + "%]\n");
         }
     }
 
@@ -175,22 +185,25 @@ public class SmartSaunaCollector {
         if(parts.length != 3) {
             System.out.println("Incorrect use of the command. Please use !set_temperature <lower bound> <upper bound>\n");
         } else {
-            int lowerBound = Integer.parseInt(parts[1]);
-            int upperBound = Integer.parseInt(parts[2]);
-            if(upperBound < lowerBound) {
-                System.out.println("ERROR: The upper bound must be larger than the lower bound\n");
-                return;
+            int lowerBound;
+            int upperBound;
+            try {
+                lowerBound = Integer.parseInt(parts[1]);
+                upperBound = Integer.parseInt(parts[2]);
+                if(upperBound < lowerBound) {
+                    System.out.println("ERROR: The upper bound must be larger than the lower bound\n");
+                    return;
+                }
+                // TODO setta nuovi bound
+                System.out.println("Temperature range set correctly: [" + lowerBound + "°C - " + upperBound + "°C]\n");
+            } catch (Exception e) {
+                System.out.println("Please enter integer values\n");
             }
-
-            // TODO setta nuovi bound
-
-            System.out.println("Temperature range set correctly: [" + lowerBound + "°C - " + upperBound + "°C]\n");
         }
     }
 
-    private static void getAirQualityFunction() {
-        // TODO leggi livello CO2 da sensore
-        int co2 = 400;
+    private static void getAirQualityFunction(CoapRegistrationServer coapRegistrationServer) {
+        int co2 = coapRegistrationServer.getCO2Level();
         System.out.println("The CO2 concentration in the sauna is " + co2 + " ppm\n");
     }
 
@@ -198,11 +211,14 @@ public class SmartSaunaCollector {
         if(parts.length != 2) {
             System.out.println("Incorrect use of the command. Please use !set_air_quality <upper bound>\n");
         } else {
-            int upperBound = Integer.parseInt(parts[1]);
-
-            // TODO setta nuovo bound
-
-            System.out.println("New upper bound for CO2 level set correctly: " + upperBound + " ppm\n");
+            int upperBound;
+            try {
+                upperBound = Integer.parseInt(parts[1]);
+                // TODO setta nuovo bound
+                System.out.println("New upper bound for CO2 level set correctly: " + upperBound + " ppm\n");
+            }  catch(Exception e) {
+            System.out.println("Please enter an integer\n");
+            }
         }
     }
 
@@ -237,10 +253,14 @@ public class SmartSaunaCollector {
         if(parts.length != 2) {
             System.out.println("Incorrect use of the command. Please use !set_max_number_of_people <number>\n");
         } else {
-            int max = Integer.parseInt(parts[1]);
-
-            // TODO imposta il nuovo bound
-            System.out.println("New maximum number of people set correctly: " + max +"\n");
+            int max;
+            try {
+                max = Integer.parseInt(parts[1]);
+                // TODO imposta il nuovo bound
+                System.out.println("New maximum number of people set correctly: " + max +"\n");
+            } catch(Exception e) {
+                System.out.println("Please enter an integer value");
+            }
         }
     }
 }
