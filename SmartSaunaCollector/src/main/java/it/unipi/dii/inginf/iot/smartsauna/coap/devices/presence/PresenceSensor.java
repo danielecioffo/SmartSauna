@@ -30,7 +30,7 @@ public class PresenceSensor {
                     newNumberOfPeople = Integer.parseInt(responseString);
                     numberOfPeople.set(newNumberOfPeople);
                 } catch(Exception e) {
-                    System.out.println("PRESENCE SENSOR: Impaired data\n");
+                    System.out.println("PRESENCE SENSOR: non-significant data\n");
                 }
 
                 if(numberOfPeople.get() > 0 && !lightOn) {

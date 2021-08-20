@@ -18,8 +18,8 @@ public class AirQuality {
 
     public void registerAirQuality(String ip) {
         System.out.println("The Air Quality system: [" + ip + "] is now registered");
-        clientCO2Sensor = new CoapClient("coap://[" + ip + "]/air-quality/co2");
-        clientVentilationSystem = new CoapClient("coap://[" + ip + "]/air-quality/ventilation");
+        clientCO2Sensor = new CoapClient("coap://[" + ip + "]/air_quality/co2");
+        clientVentilationSystem = new CoapClient("coap://[" + ip + "]/air_quality/ventilation");
 
         observeCO2 = clientCO2Sensor.observe(new CoapHandler() {
             @Override
@@ -30,7 +30,7 @@ public class AirQuality {
                     newCO2Level = Integer.parseInt(responseString);
                     co2Level.set(newCO2Level);
                 } catch (Exception e) {
-                    System.out.println("CO2 SENSOR: Impaired data\n");
+                    System.out.println("CO2 SENSOR: non-significant data\n");
                 }
 
                 if(!ventilationOn && co2Level.get() > 700) {
