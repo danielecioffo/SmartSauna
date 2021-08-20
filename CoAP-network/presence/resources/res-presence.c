@@ -5,7 +5,7 @@
 #include "sys/log.h"
 #include <time.h>
 
-#define LOG_MODULE "App"
+#define LOG_MODULE "presence-sensor"
 #define LOG_LEVEL LOG_LEVEL_APP
 
 static void presence_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset);

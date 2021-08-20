@@ -6,7 +6,7 @@
 
 /* Log configuration */
 #include "sys/log.h"
-#define LOG_MODULE "App"
+#define LOG_MODULE "ventilation-system"
 #define LOG_LEVEL LOG_LEVEL_APP
 
 static void co2_put_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset);

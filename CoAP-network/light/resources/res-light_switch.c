@@ -6,7 +6,7 @@
 
 /* Log configuration */
 #include "sys/log.h"
-#define LOG_MODULE "App"
+#define LOG_MODULE "light-switch"
 #define LOG_LEVEL LOG_LEVEL_APP
 
 #include "global_variables.h"
