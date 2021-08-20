@@ -51,6 +51,14 @@ public class PresenceSensor {
         });
     }
 
+    public void unregisterPresenceSensor(String ip) {
+        if(clientPresenceSensor.getURI().equals(ip)) {
+            clientPresenceSensor = null;
+            observePresence.proactiveCancel();
+            observePresence = null;
+        }
+    }
+
     public void addLight(Light light) {
         this.light = light;
     }
@@ -58,5 +66,4 @@ public class PresenceSensor {
     public int getNumberOfPeople() {
         return numberOfPeople.get();
     }
-
 }

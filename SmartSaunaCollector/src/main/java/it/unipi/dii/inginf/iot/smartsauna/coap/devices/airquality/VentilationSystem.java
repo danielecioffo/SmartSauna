@@ -13,6 +13,12 @@ public class VentilationSystem {
         clientVentilationSystem = new CoapClient("coap://[" + ip + "]/air-quality/ventilation");
     }
 
+    public void unregisterVentilationSystem(String ip) {
+        if(clientVentilationSystem.getURI().equals(ip)) {
+            clientVentilationSystem = null;
+        }
+    }
+
     public boolean ventilationSystemSwitch(boolean on) {
         if(clientVentilationSystem == null)
             return false;

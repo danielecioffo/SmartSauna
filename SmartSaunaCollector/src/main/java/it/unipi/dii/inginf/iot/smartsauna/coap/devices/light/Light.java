@@ -16,6 +16,16 @@ public class Light {
         clientLightColor = new CoapClient("coap://[" + ip + "]/light/color");
     }
 
+    public void unregisterLight(String ip) {
+        if(clientLightColor.getURI().equals(ip)) {
+            clientLightColor = null;
+        }
+
+        if(clientLightSwitch.getURI().equals(ip)) {
+            clientLightSwitch = null;
+        }
+    }
+
     public boolean lightSwitch(boolean on) {
         if(clientLightSwitch == null)
             return false;

@@ -49,6 +49,14 @@ public class CO2Sensor {
         });
     }
 
+    public void unregisterCO2Sensor(String ip) {
+        if(clientCO2Sensor.getURI().equals(ip)) {
+            clientCO2Sensor = null;
+            observeCO2.proactiveCancel();
+            observeCO2 = null;
+        }
+    }
+
     public void addVentilationSystem(VentilationSystem ventilationSystem) {
         this.ventilationSystem = ventilationSystem;
     }
