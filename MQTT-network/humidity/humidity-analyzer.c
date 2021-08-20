@@ -81,6 +81,7 @@ static struct mqtt_connection conn;
 PROCESS(humidity_analyzer_process, "Humidity analyzer process");
 
 static bool increase_humidity = false;
+static bool decrease_humidity = false;
 #define MIN_HUMIDITY 0
 #define MAX_HUMIDITY 100
 static int humidity_percentage = 50; // we cannot use float value in the testbed
@@ -93,15 +94,23 @@ static void pub_handler(const char *topic, uint16_t topic_len, const uint8_t *ch
 	if(strcmp(topic, "humidifier") == 0) 
 	{
 		LOG_INFO("Received Actuator command\n");
-		if (strcmp((const char*) chunk, "ON") == 0)
+		if (strcmp((const char*) chunk, "INC") == 0)
 		{
-			LOG_INFO("Switch on humidifier\n");
-			increase_humidity = true;	
+			LOG_INFO("Switch ON humidifier\n");
+			increase_humidity = true;
+			decrease_humidity = false;	
+		}
+		else if (strcmp((const char*) chunk, "DEC") == 0)
+		{
+			LOG_INFO("Switch ON dehumidifier\n");	
+			increase_humidity = false;
+			decrease_humidity = true;
 		}
 		else if (strcmp((const char*) chunk, "OFF") == 0)
 		{
-			LOG_INFO("Switch on dehumidifier\n");	
+			LOG_INFO("Turn OFF humidity regulator\n");
 			increase_humidity = false;
+			decrease_humidity = false;
 		}
 	}
 	else
@@ -237,23 +246,37 @@ PROCESS_THREAD(humidity_analyzer_process, ev, data)
 			{
 				sprintf(pub_topic, "%s", "humidity");
 				srand(time(NULL));
-				// simulate the behavior of the sensor
-				unsigned int variation = (rand()%10)+1; 	// a value in [1,10]			
-				if (increase_humidity)
+				// simulate the behavior of the sensor				
+				int variation;				
+				if (increase_humidity || decrease_humidity)
 				{
-					humidity_percentage = humidity_percentage + variation;
-					if (humidity_percentage > MAX_HUMIDITY) // impossible behavior in a real environment
+					variation = (rand()%10)+1; 	// a value in [1,10]
+					if (increase_humidity)
 					{
-						humidity_percentage = MAX_HUMIDITY; 
+						humidity_percentage = humidity_percentage + variation;
+					}
+					else
+					{
+						humidity_percentage = humidity_percentage - variation;
 					}
 				}
-				else
+				else // humidity regulator OFF
 				{
-					humidity_percentage = humidity_percentage - variation;
-					if (humidity_percentage < MIN_HUMIDITY) // impossible behavior in a real environment
+					// compute a probability to have a change
+					if ((rand()%10) < 6) // 60% chance that the humidity will change
 					{
-						humidity_percentage = MIN_HUMIDITY;
+						variation = (rand()%9)-4; // a value in [-4,4];
+						humidity_percentage = humidity_percentage + variation;
 					}
+				}			
+
+				if (humidity_percentage > MAX_HUMIDITY) // impossible behavior in a real environment
+				{
+					humidity_percentage = MAX_HUMIDITY; 
+				}
+				else if (humidity_percentage < MIN_HUMIDITY) // impossible behavior in a real environment
+				{
+					humidity_percentage = MIN_HUMIDITY;
 				}
 
 				LOG_INFO("New value of humidity: %d%%\n", humidity_percentage);
