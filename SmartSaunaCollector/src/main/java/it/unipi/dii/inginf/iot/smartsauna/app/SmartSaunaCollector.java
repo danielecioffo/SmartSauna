@@ -2,6 +2,8 @@ package it.unipi.dii.inginf.iot.smartsauna.app;
 
 import it.unipi.dii.inginf.iot.smartsauna.LightColor;
 import it.unipi.dii.inginf.iot.smartsauna.coap.CoapRegistrationServer;
+import it.unipi.dii.inginf.iot.smartsauna.mqtt.MQTTHandler;
+import it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.humidity.HumidityCollector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +14,7 @@ public class SmartSaunaCollector {
     public static void main(String[] args) throws SocketException {
         CoapRegistrationServer coapRegistrationServer = new CoapRegistrationServer();
         coapRegistrationServer.start();
+        MQTTHandler mqttNetworkHandler = new MQTTHandler();
 
         printAvailableCommands();
 

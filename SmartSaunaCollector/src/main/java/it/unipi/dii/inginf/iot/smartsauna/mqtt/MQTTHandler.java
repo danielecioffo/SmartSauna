@@ -1,34 +1,33 @@
 package it.unipi.dii.inginf.iot.smartsauna.mqtt;
 
+import com.google.gson.Gson;
+import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
+import it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.humidity.HumidityCollector;
 import org.eclipse.paho.client.mqttv3.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MQTTHandler implements MqttCallback {
 
     private final String BROKER = "tcp://127.0.0.1:1883";
     private final String CLIENT_ID = "SmartSaunaCollector";
-    private final String HUMIDITY_TOPIC = "humidity";
-    private final String HUMIDIFIER_TOPIC = "humidifier";
     private final int SECONDS_TO_WAIT_FOR_RECONNECTION = 5;
     private final int MAX_RECONNECTION_ITERATIONS = 10;
 
     private MqttClient mqttClient = null;
-    private Map<Integer, Float> lastHumiditySamples = new HashMap<>();
+    private Gson parser;
+    private HumidityCollector humidityCollector;
 
     public MQTTHandler ()
     {
+        parser = new Gson();
+        humidityCollector = new HumidityCollector();
         do {
             try {
                 mqttClient = new MqttClient(BROKER, CLIENT_ID);
                 System.out.println("Connecting to the broker: " + BROKER);
 
                 mqttClient.setCallback( this );
-                mqttClient.connect();
 
-                mqttClient.subscribe(HUMIDITY_TOPIC);
-                System.out.println("Subscribed to: " + HUMIDITY_TOPIC);
+                connectToBroker();
 
             }
             catch(MqttException me)
@@ -36,6 +35,12 @@ public class MQTTHandler implements MqttCallback {
                 System.out.println("I could not connect, Retrying ...");
             }
         }while(!mqttClient.isConnected());
+    }
+
+    private void connectToBroker () throws MqttException {
+        mqttClient.connect();
+        mqttClient.subscribe(humidityCollector.HUMIDITY_TOPIC);
+        System.out.println("Subscribed to: " + humidityCollector.HUMIDITY_TOPIC);
     }
 
     /**
@@ -71,8 +76,8 @@ public class MQTTHandler implements MqttCallback {
             try
             {
                 Thread.sleep(SECONDS_TO_WAIT_FOR_RECONNECTION * 1000 * iter);
-                mqttClient.connect();
-                mqttClient.subscribe(HUMIDITY_TOPIC);
+                System.out.println("New attempt to connect to the broker...");
+                connectToBroker();
             }
             catch (MqttException | InterruptedException e)
             {
@@ -83,12 +88,53 @@ public class MQTTHandler implements MqttCallback {
     }
 
     @Override
-    public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-
+    public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+        String payload = new String(mqttMessage.getPayload());
+        if (topic.equals(humidityCollector.HUMIDITY_TOPIC))
+        {
+            HumiditySample humiditySample = parser.fromJson(payload, HumiditySample.class);
+            humidityCollector.addHumiditySample(humiditySample);
+            float newAverage = humidityCollector.getAverage();
+            if (newAverage < humidityCollector.getLowerBoundHumidity())
+            {
+                if (!humidityCollector.getLastCommand().equals(humidityCollector.INC))
+                {
+                    System.out.println("Average level of Humidity too low, increase it");
+                    publishMessage(humidityCollector.HUMIDIFIER_TOPIC, humidityCollector.INC);
+                    humidityCollector.setLastCommand(humidityCollector.INC);
+                }
+                else
+                    System.out.println("Average level of Humidity too low, but is increasing");
+            }
+            else if (newAverage > humidityCollector.getUpperBoundHumidity())
+            {
+                if (!humidityCollector.getLastCommand().equals(humidityCollector.DEC))
+                {
+                    System.out.println("Average level of Humidity too high, decrease it");
+                    publishMessage(humidityCollector.HUMIDIFIER_TOPIC, humidityCollector.DEC);
+                    humidityCollector.setLastCommand(humidityCollector.DEC);
+                }
+                else
+                    System.out.println("Average level of Humidity too high, but is decreasing");
+            }
+            else
+            {
+                if (!humidityCollector.getLastCommand().equals(humidityCollector.OFF))
+                {
+                    System.out.println("Correct average humidity level, switch off the humidifier/dehumidifier");
+                    publishMessage(humidityCollector.HUMIDIFIER_TOPIC, humidityCollector.OFF);
+                    humidityCollector.setLastCommand(humidityCollector.OFF);
+                }
+                else
+                {
+                    System.out.println("Correct average humidity level");
+                }
+            }
+        }
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-
+        System.out.println("Message correctly delivered");
     }
 }
