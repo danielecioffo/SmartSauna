@@ -25,7 +25,13 @@ public class AirQuality {
             @Override
             public void onLoad(CoapResponse coapResponse) {
                 String responseString = coapResponse.getResponseText();
-                co2Level.set(Integer.parseInt(responseString));
+                int newCO2Level;
+                try {
+                    newCO2Level = Integer.parseInt(responseString);
+                    co2Level.set(newCO2Level);
+                } catch (Exception e) {
+                    System.out.println("CO2 SENSOR: Impaired data\n");
+                }
 
                 if(!ventilationOn && co2Level.get() > 700) {
                     System.out.println("CO2 level is HIGH, the ventilation system is switched ON");

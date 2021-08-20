@@ -25,7 +25,13 @@ public class PresenceSensor {
             @Override
             public void onLoad(CoapResponse coapResponse) {
                 String responseString = coapResponse.getResponseText();
-                numberOfPeople.set(Integer.parseInt(responseString));
+                int newNumberOfPeople;
+                try {
+                    newNumberOfPeople = Integer.parseInt(responseString);
+                    numberOfPeople.set(newNumberOfPeople);
+                } catch(Exception e) {
+                    System.out.println("PRESENCE SENSOR: Impaired data\n");
+                }
 
                 if(numberOfPeople.get() > 0 && !lightOn) {
                     if(light != null) {
