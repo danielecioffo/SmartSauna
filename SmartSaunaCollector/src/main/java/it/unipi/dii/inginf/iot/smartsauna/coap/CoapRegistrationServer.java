@@ -1,5 +1,6 @@
 package it.unipi.dii.inginf.iot.smartsauna.coap;
 
+import it.unipi.dii.inginf.iot.smartsauna.LightColor;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.CoapDevicesHandler;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.CoapServer;
@@ -22,7 +23,9 @@ public class CoapRegistrationServer extends CoapServer {
     }
 
     // SET
-    //----
+    public void setLightColor(LightColor lightColor) {
+        coapDevicesHandler.setLightColor(lightColor);
+    }
 
     class CoapRegistrationResource extends CoapResource {
         public CoapRegistrationResource() {
@@ -38,8 +41,6 @@ public class CoapRegistrationServer extends CoapServer {
             switch (deviceType) {
                 case "co2_sensor":
                     coapDevicesHandler.registerCO2Sensor(ip);
-                    break;
-                case "ventilation_system":
                     coapDevicesHandler.registerVentilationSystem(ip);
                     break;
                 case "light":

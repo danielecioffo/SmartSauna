@@ -16,7 +16,7 @@ public class CO2Sensor {
     private AtomicInteger co2Level = new AtomicInteger(300);
 
     public void registerCO2Sensor(String ip) {
-        System.out.println("The CO2 sensor: [" + ip + "] + is now registered");
+        System.out.println("The CO2 sensor: [" + ip + "] is now registered");
         clientCO2Sensor = new CoapClient("coap://[" + ip + "]/air-quality/co2");
 
         observeCO2 = clientCO2Sensor.observe(new CoapHandler() {

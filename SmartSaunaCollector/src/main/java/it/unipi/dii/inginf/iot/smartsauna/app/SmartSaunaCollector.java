@@ -1,5 +1,6 @@
 package it.unipi.dii.inginf.iot.smartsauna.app;
 
+import it.unipi.dii.inginf.iot.smartsauna.LightColor;
 import it.unipi.dii.inginf.iot.smartsauna.coap.CoapRegistrationServer;
 
 import java.io.BufferedReader;
@@ -47,7 +48,7 @@ public class SmartSaunaCollector {
                         setAirQualityFunction(parts);
                         break;
                     case "!set_color":
-                        setColorFunction(parts);
+                        setColorFunction(coapRegistrationServer, parts);
                         break;
                     case "!get_number_of_people":
                         getNumberOfPeopleFunction();
@@ -222,12 +223,13 @@ public class SmartSaunaCollector {
         }
     }
 
-    private static void setColorFunction(String[] parts) {
+    private static void setColorFunction(CoapRegistrationServer coapRegistrationServer, String[] parts) {
         if(parts.length != 2) {
             System.out.println("Incorrect use of the command. Please use !set_color <color>\n");
         } else {
             switch(parts[1]) {  // TODO imposta i colori effettivamente sulla luce
                 case "GREEN":
+                    coapRegistrationServer.setLightColor(LightColor.GREEN);
                     System.out.println("Light color correctly set to GREEN\n");
                     break;
                 case "RED":

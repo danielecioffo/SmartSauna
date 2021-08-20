@@ -9,7 +9,7 @@ public class VentilationSystem {
     private CoapClient clientVentilationSystem;
 
     public void registerVentilationSystem(String ip) {
-        System.out.println("The ventilation system: [" + ip + "] + is now registered");
+        System.out.println("The ventilation system: [" + ip + "] is now registered");
         clientVentilationSystem = new CoapClient("coap://[" + ip + "]/air-quality/ventilation");
     }
 

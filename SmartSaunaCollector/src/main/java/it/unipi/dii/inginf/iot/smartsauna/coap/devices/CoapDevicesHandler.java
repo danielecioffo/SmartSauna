@@ -1,5 +1,6 @@
 package it.unipi.dii.inginf.iot.smartsauna.coap.devices;
 
+import it.unipi.dii.inginf.iot.smartsauna.LightColor;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality.CO2Sensor;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality.VentilationSystem;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.light.Light;
@@ -66,6 +67,9 @@ public class CoapDevicesHandler {
         return presenceSensor.getNumberOfPeople();
     }
 
-    /*      GET MEASURES FROM SENSORS     */
+    /*      SET     */
+    public void setLightColor(LightColor lightColor) {
+        light.changeLightColor(lightColor);
+    }
 
 }
