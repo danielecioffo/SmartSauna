@@ -1,21 +1,18 @@
 package it.unipi.dii.inginf.iot.smartsauna.coap.devices;
 
 import it.unipi.dii.inginf.iot.smartsauna.LightColor;
-import it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality.CO2Sensor;
-import it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality.VentilationSystem;
+import it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality.AirQuality;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.light.Light;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.presence.PresenceSensor;
 
 public class CoapDevicesHandler {
-    private CO2Sensor co2Sensor = new CO2Sensor();
-    private VentilationSystem ventilationSystem = new VentilationSystem();
+    private AirQuality airQuality = new AirQuality();
     private Light light = new Light();
     private PresenceSensor presenceSensor = new PresenceSensor();
 
     private static CoapDevicesHandler instance = null;
 
     private CoapDevicesHandler() {
-        co2Sensor.addVentilationSystem(ventilationSystem);
         presenceSensor.addLight(light);
     }
     public static CoapDevicesHandler getInstance() {
@@ -26,12 +23,8 @@ public class CoapDevicesHandler {
     }
 
     /*      REGISTER AND UNREGISTER DEVICES     */
-    public void registerCO2Sensor(String ip) {
-        co2Sensor.registerCO2Sensor(ip);
-    }
-
-    public void registerVentilationSystem(String ip) {
-        ventilationSystem.registerVentilationSystem(ip);
+    public void registerAirQuality(String ip) {
+        airQuality.registerAirQuality(ip);
     }
 
     public void registerLight(String ip) {
@@ -42,12 +35,8 @@ public class CoapDevicesHandler {
         presenceSensor.registerPresenceSensor(ip);
     }
 
-    public void unregisterCO2Sensor(String ip) {
-        co2Sensor.unregisterCO2Sensor(ip);
-    }
-
-    public void unregisterVentilationSystem(String ip) {
-        ventilationSystem.unregisterVentilationSystem(ip);
+    public void unregisterAirQuality(String ip) {
+        airQuality.unregisterAirQuality(ip);
     }
 
     public void unregisterLight(String ip) {
@@ -60,7 +49,7 @@ public class CoapDevicesHandler {
 
     /*      GET MEASURES FROM SENSORS     */
     public int getCO2Level() {
-        return co2Sensor.getCO2Level();
+        return airQuality.getCO2Level();
     }
 
     public int getNumberOfPeople() {

@@ -22,6 +22,10 @@ public class CoapRegistrationServer extends CoapServer {
         return coapDevicesHandler.getCO2Level();
     }
 
+    public int getNumberOfPeople() {
+        return coapDevicesHandler.getNumberOfPeople();
+    }
+
     // SET
     public void setLightColor(LightColor lightColor) {
         coapDevicesHandler.setLightColor(lightColor);
@@ -39,9 +43,8 @@ public class CoapRegistrationServer extends CoapServer {
             boolean success = true;
 
             switch (deviceType) {
-                case "co2_sensor":
-                    coapDevicesHandler.registerCO2Sensor(ip);
-                    coapDevicesHandler.registerVentilationSystem(ip);
+                case "air_quality":
+                    coapDevicesHandler.registerAirQuality(ip);
                     break;
                 case "light":
                     coapDevicesHandler.registerLight(ip);
@@ -68,11 +71,8 @@ public class CoapRegistrationServer extends CoapServer {
             boolean success = true;;
 
             switch (deviceType) {
-                case "co2_sensor":
-                    coapDevicesHandler.unregisterCO2Sensor(ip);
-                    break;
-                case "ventilation_system":
-                    coapDevicesHandler.unregisterVentilationSystem(ip);
+                case "air_quality":
+                    coapDevicesHandler.unregisterAirQuality(ip);
                     break;
                 case "light":
                     coapDevicesHandler.unregisterLight(ip);
