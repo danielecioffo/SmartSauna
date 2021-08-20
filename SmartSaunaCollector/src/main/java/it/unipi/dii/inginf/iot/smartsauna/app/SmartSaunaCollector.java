@@ -191,7 +191,7 @@ public class SmartSaunaCollector {
     private static void getAirQualityFunction() {
         // TODO leggi livello CO2 da sensore
         int co2 = 400;
-        System.out.println("TThe CO2 concentration in the sauna is " + co2 + " ppm\n");
+        System.out.println("The CO2 concentration in the sauna is " + co2 + " ppm\n");
     }
 
     private static void setAirQualityFunction(String[] parts) {
@@ -228,10 +228,19 @@ public class SmartSaunaCollector {
     }
 
     private static void getNumberOfPeopleFunction() {
-
+        // TODO leggi numero di persone da sensore
+        int people = 10;
+        System.out.println("There are " + people + " people inside the sauna\n");
     }
 
     private static void setMaxNumberOfPeopleFunction(String[] parts) {
+        if(parts.length != 2) {
+            System.out.println("Incorrect use of the command. Please use !set_max_number_of_people <number>\n");
+        } else {
+            int max = Integer.parseInt(parts[1]);
 
+            // TODO imposta il nuovo bound
+            System.out.println("New maximum number of people set correctly: " + max +"\n");
+        }
     }
 }
