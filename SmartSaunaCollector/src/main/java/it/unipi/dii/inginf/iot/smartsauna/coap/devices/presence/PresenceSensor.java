@@ -50,7 +50,7 @@ public class PresenceSensor {
                     }
                 }
 
-                if(numberOfPeople.get() == maxNumberOfPeople.get()) {
+                if(!full && numberOfPeople.get() >= maxNumberOfPeople.get()) {
                     System.out.print("\n[PRESENCE] The sauna is FULL, it is not possible to enter\n>");
                     full = true;
                 }
