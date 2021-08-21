@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DBDriver {
-    private static volatile DBDriver instance = null;
+    private static DBDriver instance = null;
 
     private static String databaseIp;
     private static int databasePort;
