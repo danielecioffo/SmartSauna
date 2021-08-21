@@ -1,5 +1,7 @@
 package it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality;
 
+import it.unipi.dii.inginf.iot.smartsauna.model.AirQualitySample;
+import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
@@ -34,6 +36,7 @@ public class AirQuality {
                 int newCO2Level;
                 try {
                     newCO2Level = Integer.parseInt(responseString);
+                    DBDriver.insertAirQualitySample(new AirQualitySample(0, newCO2Level)); //TODO come si ottiene l'ID del nodo?
                     int average = (co2Level.get()*(clientCO2SensorList.size() - 1) + newCO2Level)/(clientCO2SensorList.size()); 
                     co2Level.set(average);
                 } catch (Exception e) {

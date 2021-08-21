@@ -1,6 +1,8 @@
 package it.unipi.dii.inginf.iot.smartsauna.coap.devices.presence;
 
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.light.Light;
+import it.unipi.dii.inginf.iot.smartsauna.model.PresenceSample;
+import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
@@ -30,6 +32,7 @@ public class PresenceSensor {
                 int newNumberOfPeople;
                 try {
                     newNumberOfPeople = Integer.parseInt(responseString);
+                    DBDriver.insertPresenceSample(new PresenceSample(0, newNumberOfPeople)); // TODO come si ottiene l'ID del nodo?
                     numberOfPeople.set(newNumberOfPeople);
                 } catch(Exception e) {
                     System.out.print("\n[ERROR] The presence sensor gave non-significant data\n>");

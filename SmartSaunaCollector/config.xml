@@ -2,8 +2,8 @@
 <it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters>
 	<databaseIp>localhost</databaseIp>
 	<databasePort>3306</databasePort>
-	<databaseUsername></databaseUsername>
-	<databasePassword></databasePassword>
+	<databaseUsername>root</databaseUsername>
+	<databasePassword>root</databasePassword>
 	<databaseName>smart_sauna</databaseName>
 	<lowerBoundTemperature>70</lowerBoundTemperature>
 	<upperBoundTemperature>100</upperBoundTemperature>

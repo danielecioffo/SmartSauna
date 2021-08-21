@@ -12,11 +12,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DBDriver {
-    private String databaseIp;
-    private int databasePort;
-    private String databaseUsername;
-    private String databasePassword;
-    private String databaseName;
+    private static String databaseIp;
+    private static int databasePort;
+    private static String databaseUsername;
+    private static String databasePassword;
+    private static String databaseName;
 
     public DBDriver() {
         ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
@@ -32,13 +32,13 @@ public class DBDriver {
      *
      * @throws SQLException  in case the connection to the database fails.
      */
-    private Connection getConnection() throws SQLException {
+    private static Connection getConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:mysql://"+ databaseIp + ":" + databasePort +
                         "/" + databaseName + "?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=CET",
                 databaseUsername, databasePassword);
     }
 
-    public void insertAirQualitySample(AirQualitySample airQualitySample) {
+    public static void insertAirQualitySample(AirQualitySample airQualitySample) {
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO air_quality (node, concentration) VALUES (?, ?)")
@@ -58,7 +58,7 @@ public class DBDriver {
      * Insert a new sample received by a humidity sensor
      * @param humiditySample    sample to be inserted
      */
-    public void insertHumiditySample (HumiditySample humiditySample) {
+    public static void insertHumiditySample (HumiditySample humiditySample) {
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO humidity (node, percentage) VALUES (?, ?)")
@@ -74,7 +74,7 @@ public class DBDriver {
         }
     }
 
-    public void insertPresenceSample(PresenceSample presenceSample) {
+    public static void insertPresenceSample(PresenceSample presenceSample) {
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO presence (node, quantity) VALUES (?, ?)")
@@ -90,7 +90,7 @@ public class DBDriver {
         }
     }
 
-    public void insertTemperatureSample(TemperatureSample temperatureSample) {
+    public static void insertTemperatureSample(TemperatureSample temperatureSample) {
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO temperature (node, degrees) VALUES (?, ?)")
