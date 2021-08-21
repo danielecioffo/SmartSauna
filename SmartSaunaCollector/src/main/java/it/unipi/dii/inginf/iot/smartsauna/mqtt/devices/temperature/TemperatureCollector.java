@@ -23,8 +23,8 @@ public class TemperatureCollector {
     {
         lastTemperatureSamples = new HashMap<>();
         ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
-        lowerBoundTemperature = configurationParameters.getLowerBoundHumidity();
-        upperBoundTemperature = configurationParameters.getUpperBoundHumidity();
+        lowerBoundTemperature = configurationParameters.getLowerBoundTemperature();
+        upperBoundTemperature = configurationParameters.getUpperBoundTemperature();
         lastCommand = OFF;
     }
 

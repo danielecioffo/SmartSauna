@@ -102,35 +102,35 @@ public class MQTTHandler implements MqttCallback {
             {
                 if (!humidityCollector.getLastCommand().equals(humidityCollector.INC))
                 {
-                    System.out.println("Average level of Humidity too low, increase it");
+                    System.out.println("Average level of Humidity too low: " + newAverage + "%, increase it");
                     publishMessage(humidityCollector.HUMIDIFIER_TOPIC, humidityCollector.INC);
                     humidityCollector.setLastCommand(humidityCollector.INC);
                 }
                 else
-                    System.out.println("Average level of Humidity too low, but is increasing");
+                    System.out.println("Average level of Humidity too low: " + newAverage + "%, but is increasing");
             }
             else if (newAverage > humidityCollector.getUpperBoundHumidity())
             {
                 if (!humidityCollector.getLastCommand().equals(humidityCollector.DEC))
                 {
-                    System.out.println("Average level of Humidity too high, decrease it");
+                    System.out.println("Average level of Humidity too high: " + newAverage + "%, decrease it");
                     publishMessage(humidityCollector.HUMIDIFIER_TOPIC, humidityCollector.DEC);
                     humidityCollector.setLastCommand(humidityCollector.DEC);
                 }
                 else
-                    System.out.println("Average level of Humidity too high, but is decreasing");
+                    System.out.println("Average level of Humidity too high: " + newAverage + "%, but is decreasing");
             }
             else
             {
                 if (!humidityCollector.getLastCommand().equals(humidityCollector.OFF))
                 {
-                    System.out.println("Correct average humidity level, switch off the humidifier/dehumidifier");
+                    System.out.println("Correct average humidity level: " + newAverage + "%, switch off the humidifier/dehumidifier");
                     publishMessage(humidityCollector.HUMIDIFIER_TOPIC, humidityCollector.OFF);
                     humidityCollector.setLastCommand(humidityCollector.OFF);
                 }
                 else
                 {
-                    System.out.println("Correct average humidity level");
+                    System.out.println("Correct average humidity level: " + newAverage + "%");
                 }
             }
         }
@@ -143,34 +143,34 @@ public class MQTTHandler implements MqttCallback {
             {
                 if (!temperatureCollector.getLastCommand().equals(humidityCollector.INC))
                 {
-                    System.out.println("Average level of Temperature too low, increase it");
+                    System.out.println("Average level of Temperature too low: " + newAverage + "°C, increase it");
                     publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.INC);
                     temperatureCollector.setLastCommand(temperatureCollector.INC);
                 }
                 else
-                    System.out.println("Average level of Temperature too low, but is increasing");
+                    System.out.println("Average level of Temperature too low: " + newAverage + "°C, but is increasing");
             }
             else if (newAverage > temperatureCollector.getUpperBoundTemperature())
             {
                 if (!temperatureCollector.getLastCommand().equals(humidityCollector.DEC))
                 {
-                    System.out.println("Average level of Temperature too high, decrease it");
+                    System.out.println("Average level of Temperature too high: " + newAverage + "°C, decrease it");
                     publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.DEC);
                     temperatureCollector.setLastCommand(temperatureCollector.DEC);
                 }
                 else
-                    System.out.println("Average level of Temperature too high, but is decreasing");
+                    System.out.println("Average level of Temperature too high: " + newAverage + "°C, but is decreasing");
             }
             else
             {
                 if (!temperatureCollector.getLastCommand().equals(humidityCollector.OFF))
                 {
-                    System.out.println("Correct average temperature level, switch off the AC");
+                    System.out.println("Correct average temperature level: " + newAverage +"°C, switch off the AC");
                     publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.OFF);
                     temperatureCollector.setLastCommand(temperatureCollector.OFF);
                 }
                 else
-                    System.out.println("Correct average Temperature level");
+                    System.out.println("Correct average Temperature level: " + newAverage + "°C");
             }
         }
     }
