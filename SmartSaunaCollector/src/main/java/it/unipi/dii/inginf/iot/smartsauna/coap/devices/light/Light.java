@@ -6,67 +6,72 @@ import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Light {
-    private CoapClient clientLightSwitch;
-    private CoapClient clientLightColor;
+    private List<CoapClient> clientLightSwitchList = new ArrayList<>();
+    private List<CoapClient> clientLightColorList = new ArrayList<>();
 
     public void registerLight(String ip) {
         System.out.print("[REGISTRATION] The light: [" + ip + "] is now registered");
-        clientLightSwitch = new CoapClient("coap://[" + ip + "]/light/switch");
-        clientLightColor = new CoapClient("coap://[" + ip + "]/light/color");
+        CoapClient newClientLightSwitch = new CoapClient("coap://[" + ip + "]/light/switch");
+        CoapClient newClientLightColor = new CoapClient("coap://[" + ip + "]/light/color");
+
+        clientLightSwitchList.add(newClientLightSwitch);
+        clientLightColorList.add(newClientLightColor);
     }
 
     public void unregisterLight(String ip) {
-        if(clientLightColor.getURI().equals(ip)) {
-            clientLightColor = null;
-        }
-
-        if(clientLightSwitch.getURI().equals(ip)) {
-            clientLightSwitch = null;
+        for(int i=0; i<clientLightSwitchList.size(); i++) {
+            if(clientLightSwitchList.get(i).getURI().equals(ip)) {
+                clientLightSwitchList.remove(i);
+                clientLightColorList.remove(i);
+            }
         }
     }
 
-    public boolean lightSwitch(boolean on) {
-        if(clientLightSwitch == null)
-            return false;
+    public void lightSwitch(boolean on) {
+        if(clientLightSwitchList == null)
+            return;
 
         String msg = "mode=" + (on ? "ON" : "OFF");
-        clientLightSwitch.put(new CoapHandler() {
-            @Override
-            public void onLoad(CoapResponse coapResponse) {
-                if(coapResponse != null) {
-                    if(!coapResponse.isSuccess())
-                        System.out.print("[ERROR]Light Switch: PUT request unsuccessful");
+        for(CoapClient clientLightSwitch: clientLightSwitchList) {
+            clientLightSwitch.put(new CoapHandler() {
+                @Override
+                public void onLoad(CoapResponse coapResponse) {
+                    if (coapResponse != null) {
+                        if (!coapResponse.isSuccess())
+                            System.out.print("[ERROR]Light Switch: PUT request unsuccessful");
+                    }
                 }
-            }
 
-            @Override
-            public void onError() {
-                System.err.print("[ERROR] Light Switch " + clientLightSwitch.getURI() + "]");
-            }
-        }, msg, MediaTypeRegistry.TEXT_PLAIN);
-
-        return true;
+                @Override
+                public void onError() {
+                    System.err.print("[ERROR] Light Switch " + clientLightSwitch.getURI() + "]");
+                }
+            }, msg, MediaTypeRegistry.TEXT_PLAIN);
+        }
     }
 
-    public boolean changeLightColor(LightColor color) {
-        if(clientLightColor == null)
-            return false;
+    public void changeLightColor(LightColor color) {
+        if(clientLightColorList == null)
+            return;
 
         String msg = "color=" + color.name();
-        clientLightColor.put(new CoapHandler() {
-            @Override
-            public void onLoad(CoapResponse coapResponse) {
-                if(!coapResponse.isSuccess())
-                    System.out.print("[ERROR] Light Color: PUT request unsuccessful");
-            }
+        for(CoapClient clientLightColor: clientLightColorList) {
+            clientLightColor.put(new CoapHandler() {
+                @Override
+                public void onLoad(CoapResponse coapResponse) {
+                    if (!coapResponse.isSuccess())
+                        System.out.print("[ERROR] Light Color: PUT request unsuccessful");
+                }
 
-            @Override
-            public void onError() {
-                System.err.print("[ERROR] Light Color " + clientLightColor.getURI() + "]");
-            }
-        }, msg, MediaTypeRegistry.TEXT_PLAIN);
-
-        return true;
+                @Override
+                public void onError() {
+                    System.err.print("[ERROR] Light Color " + clientLightColor.getURI() + "]");
+                }
+            }, msg, MediaTypeRegistry.TEXT_PLAIN);
+        }
     }
 }
