@@ -44,6 +44,15 @@ static bool update_counter () // simulate the behavior of the real sensor
 			updated = true;	
 		}
 	}
+
+	if(updated) {
+        if(number_of_people < max_number_of_people) {
+            leds_set(LEDS_NUM_TO_MASK(LEDS_GREEN));
+        } else {
+            leds_set(LEDS_NUM_TO_MASK(LEDS_RED));
+        }
+	}
+
 	return updated;
 }
 

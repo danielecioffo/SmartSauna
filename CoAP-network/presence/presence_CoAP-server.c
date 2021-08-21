@@ -76,6 +76,8 @@ PROCESS_THREAD(presence_server, ev, data)
 	static coap_endpoint_t server_ep;
     static coap_message_t request[1]; // This way the packet can be treated as pointer as usual
 
+    leds_set(LEDS_NUM_TO_MASK(LEDS_GREEN));
+
 	PROCESS_PAUSE();
 
 	LOG_INFO("Starting Presence CoAP-Server\n");
