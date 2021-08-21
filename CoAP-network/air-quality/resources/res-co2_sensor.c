@@ -29,12 +29,15 @@ static bool update_co2 () { // simulate the behavior of the real sensor
 	bool updated = false;
 	unsigned int old_co2_level = co2_level;
 
+    srand(time(NULL));
+    int value = 0;
+
 	if(ventilation_on) {	// If the ventilation system is turned on, air quality improves
+	    value = rand()*7 + 6; // a random number in [6;12]
 		co2_level = (int) (co2_level - 6);
 	}
-	
-	srand(time(NULL));
-	int value = rand() % 16; // a random rumber between 0 and 15
+
+	value = rand() % 16; // a random number between 0 and 15
 	co2_level = (int) (co2_level + 0.75*value);	// In any case, the CO2 level can only increase more or less rapidly
 		
 
