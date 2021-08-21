@@ -3,6 +3,7 @@
 #include <string.h>
 #include "coap-engine.h"
 #include "sys/log.h"
+#include "dev/leds.h"
 #include <time.h>
 
 #define LOG_MODULE "presence-sensor"
