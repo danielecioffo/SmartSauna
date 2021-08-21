@@ -2,7 +2,9 @@ package it.unipi.dii.inginf.iot.smartsauna.mqtt;
 
 import com.google.gson.Gson;
 import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
+import it.unipi.dii.inginf.iot.smartsauna.model.TemperatureSample;
 import it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.humidity.HumidityCollector;
+import it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.temperature.TemperatureCollector;
 import org.eclipse.paho.client.mqttv3.*;
 
 public class MQTTHandler implements MqttCallback {
@@ -15,20 +17,19 @@ public class MQTTHandler implements MqttCallback {
     private MqttClient mqttClient = null;
     private Gson parser;
     private HumidityCollector humidityCollector;
+    private TemperatureCollector temperatureCollector;
 
     public MQTTHandler ()
     {
         parser = new Gson();
         humidityCollector = new HumidityCollector();
+        temperatureCollector = new TemperatureCollector();
         do {
             try {
                 mqttClient = new MqttClient(BROKER, CLIENT_ID);
                 System.out.println("Connecting to the broker: " + BROKER);
-
                 mqttClient.setCallback( this );
-
                 connectToBroker();
-
             }
             catch(MqttException me)
             {
@@ -41,6 +42,8 @@ public class MQTTHandler implements MqttCallback {
         mqttClient.connect();
         mqttClient.subscribe(humidityCollector.HUMIDITY_TOPIC);
         System.out.println("Subscribed to: " + humidityCollector.HUMIDITY_TOPIC);
+        mqttClient.subscribe(temperatureCollector.TEMPERATURE_TOPIC);
+        System.out.println("Subscribed to: " + temperatureCollector.TEMPERATURE_TOPIC);
     }
 
     /**
@@ -131,10 +134,57 @@ public class MQTTHandler implements MqttCallback {
                 }
             }
         }
+        else if (topic.equals(temperatureCollector.TEMPERATURE_TOPIC))
+        {
+            TemperatureSample temperatureSample = parser.fromJson(payload, TemperatureSample.class);
+            temperatureCollector.addTemperatureSample(temperatureSample);
+            float newAverage = temperatureCollector.getAverage();
+            if (newAverage < temperatureCollector.getLowerBoundTemperature())
+            {
+                if (!temperatureCollector.getLastCommand().equals(humidityCollector.INC))
+                {
+                    System.out.println("Average level of Temperature too low, increase it");
+                    publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.INC);
+                    temperatureCollector.setLastCommand(temperatureCollector.INC);
+                }
+                else
+                    System.out.println("Average level of Temperature too low, but is increasing");
+            }
+            else if (newAverage > temperatureCollector.getUpperBoundTemperature())
+            {
+                if (!temperatureCollector.getLastCommand().equals(humidityCollector.DEC))
+                {
+                    System.out.println("Average level of Temperature too high, decrease it");
+                    publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.DEC);
+                    temperatureCollector.setLastCommand(temperatureCollector.DEC);
+                }
+                else
+                    System.out.println("Average level of Temperature too high, but is decreasing");
+            }
+            else
+            {
+                if (!temperatureCollector.getLastCommand().equals(humidityCollector.OFF))
+                {
+                    System.out.println("Correct average temperature level, switch off the AC");
+                    publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.OFF);
+                    temperatureCollector.setLastCommand(temperatureCollector.OFF);
+                }
+                else
+                    System.out.println("Correct average Temperature level");
+            }
+        }
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
         System.out.println("Message correctly delivered");
+    }
+
+    public HumidityCollector getHumidityCollector() {
+        return humidityCollector;
+    }
+
+    public TemperatureCollector getTemperatureCollector() {
+        return temperatureCollector;
     }
 }

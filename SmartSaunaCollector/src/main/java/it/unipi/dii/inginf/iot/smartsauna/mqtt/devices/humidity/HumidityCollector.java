@@ -34,11 +34,6 @@ public class HumidityCollector {
         System.out.println(humiditySample);
     }
 
-    public HumiditySample getLastHumiditySampleOfNode (int node)
-    {
-        return lastHumiditySamples.get(node);
-    }
-
     public float getAverage ()
     {
         int howMany = lastHumiditySamples.size();
@@ -54,6 +49,14 @@ public class HumidityCollector {
 
     public float getUpperBoundHumidity() {
         return upperBoundHumidity;
+    }
+
+    public void setLowerBoundHumidity(float lowerBoundHumidity) {
+        this.lowerBoundHumidity = lowerBoundHumidity;
+    }
+
+    public void setUpperBoundHumidity(float upperBoundHumidity) {
+        this.upperBoundHumidity = upperBoundHumidity;
     }
 
     public String getLastCommand() {

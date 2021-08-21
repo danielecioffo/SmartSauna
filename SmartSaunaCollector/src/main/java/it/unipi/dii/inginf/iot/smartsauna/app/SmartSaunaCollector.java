@@ -4,6 +4,7 @@ import it.unipi.dii.inginf.iot.smartsauna.LightColor;
 import it.unipi.dii.inginf.iot.smartsauna.coap.CoapRegistrationServer;
 import it.unipi.dii.inginf.iot.smartsauna.mqtt.MQTTHandler;
 import it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.humidity.HumidityCollector;
+import it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.temperature.TemperatureCollector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.SocketException;
 
 public class SmartSaunaCollector {
+
     public static void main(String[] args) throws SocketException {
         CoapRegistrationServer coapRegistrationServer = new CoapRegistrationServer();
         coapRegistrationServer.start();
@@ -33,16 +35,16 @@ public class SmartSaunaCollector {
                         helpFunction(parts);
                         break;
                     case "!get_humidity":
-                        getHumidityFunction(coapRegistrationServer);
+                        getHumidityFunction(mqttNetworkHandler.getHumidityCollector());
                         break;
                     case "!set_humidity":
-                        setHumidityFunction(parts);
+                        setHumidityFunction(parts, mqttNetworkHandler.getHumidityCollector());
                         break;
                     case "!get_temperature":
-                        getTemperatureFunction();
+                        getTemperatureFunction(mqttNetworkHandler.getTemperatureCollector());
                         break;
                     case "!set_temperature":
-                        setTemperatureFunction(parts);
+                        setTemperatureFunction(parts, mqttNetworkHandler.getTemperatureCollector());
                         break;
                     case "!get_air_quality":
                         getAirQualityFunction(coapRegistrationServer);
@@ -152,26 +154,26 @@ public class SmartSaunaCollector {
         }
     }
 
-    private static void getHumidityFunction(CoapRegistrationServer coapRegistrationServer) {
-        // TODO leggi umidità da sensore
-        int humidity = 50;
+    private static void getHumidityFunction(HumidityCollector humidityCollector) {
+        float humidity = humidityCollector.getAverage();
         System.out.println("The humidity level in the sauna is " + humidity + "%\n");
     }
 
-    private static void setHumidityFunction(String[] parts) {
+    private static void setHumidityFunction(String[] parts, HumidityCollector humidityCollector) {
         if(parts.length != 3) {
             System.out.println("Incorrect use of the command. Please use !set_humidity <lower bound> <upper bound>\n");
         } else {
-            int lowerBound;
-            int upperBound;
+            float lowerBound;
+            float upperBound;
             try {
-                lowerBound = Integer.parseInt(parts[1]);
-                upperBound = Integer.parseInt(parts[2]);
+                lowerBound = Float.parseFloat(parts[1]);
+                upperBound = Float.parseFloat(parts[2]);
                 if (upperBound < lowerBound) {
                     System.out.println("ERROR: The upper bound must be larger than the lower bound\n");
                     return;
                 }
-                // TODO setta nuovi bound
+                humidityCollector.setLowerBoundHumidity(lowerBound);
+                humidityCollector.setUpperBoundHumidity(upperBound);
                 System.out.println("Humidity range set correctly: [" + lowerBound + "% - " + upperBound + "%]\n");
             } catch(Exception e) {
                 System.out.println("Please enter integer values\n");
@@ -179,26 +181,26 @@ public class SmartSaunaCollector {
         }
     }
 
-    private static void getTemperatureFunction() {
-        // TODO leggi temperatura da sensore
-        int temperature = 50;
+    private static void getTemperatureFunction(TemperatureCollector temperatureCollector) {
+        float temperature = temperatureCollector.getAverage();
         System.out.println("The temperature in the sauna is " + temperature + "°C\n");
     }
 
-    private static void setTemperatureFunction(String[] parts) {
+    private static void setTemperatureFunction(String[] parts, TemperatureCollector temperatureCollector) {
         if(parts.length != 3) {
             System.out.println("Incorrect use of the command. Please use !set_temperature <lower bound> <upper bound>\n");
         } else {
-            int lowerBound;
-            int upperBound;
+            float lowerBound;
+            float upperBound;
             try {
-                lowerBound = Integer.parseInt(parts[1]);
-                upperBound = Integer.parseInt(parts[2]);
+                lowerBound = Float.parseFloat(parts[1]);
+                upperBound = Float.parseFloat(parts[2]);
                 if(upperBound < lowerBound) {
                     System.out.println("ERROR: The upper bound must be larger than the lower bound\n");
                     return;
                 }
-                // TODO setta nuovi bound
+                temperatureCollector.setLowerBoundTemperature(lowerBound);
+                temperatureCollector.setUpperBoundTemperature(upperBound);
                 System.out.println("Temperature range set correctly: [" + lowerBound + "°C - " + upperBound + "°C]\n");
             } catch (Exception e) {
                 System.out.println("Please enter integer values\n");
