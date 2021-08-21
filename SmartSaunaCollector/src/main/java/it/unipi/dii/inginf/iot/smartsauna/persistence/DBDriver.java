@@ -8,14 +8,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DbDriver {
+public class DBDriver {
     private String databaseIp;
     private int databasePort;
     private String databaseUsername;
     private String databasePassword;
     private String databaseName;
 
-    public DbDriver ()
+    public DBDriver()
     {
         ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
         this.databaseIp = configurationParameters.getDatabaseIp();

@@ -76,7 +76,7 @@ public class CoapRegistrationServer extends CoapServer {
             String[] request = exchange.getRequestText().split("-");
             String ip = request[0];
             String deviceType = request[1];
-            boolean success = true;;
+            boolean success = true;
 
             switch (deviceType) {
                 case "air_quality":
