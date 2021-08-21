@@ -32,7 +32,7 @@ public class PresenceSensor {
                 int newNumberOfPeople;
                 try {
                     newNumberOfPeople = Integer.parseInt(responseString);
-                    DBDriver.insertPresenceSample(new PresenceSample(newNumberOfPeople));
+                    DBDriver.getInstance().insertPresenceSample(new PresenceSample(newNumberOfPeople));
                     numberOfPeople.set(newNumberOfPeople);
                 } catch(Exception e) {
                     System.out.print("\n[ERROR] The presence sensor gave non-significant data\n>");

@@ -1,5 +1,6 @@
 package it.unipi.dii.inginf.iot.smartsauna.persistence;
 
+import it.unipi.dii.inginf.iot.smartsauna.coap.devices.CoapDevicesHandler;
 import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
 import it.unipi.dii.inginf.iot.smartsauna.model.AirQualitySample;
 import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
@@ -12,19 +13,28 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DBDriver {
+    private static volatile DBDriver instance = null;
+
     private static String databaseIp;
     private static int databasePort;
     private static String databaseUsername;
     private static String databasePassword;
     private static String databaseName;
 
-    public DBDriver() {
+    public static DBDriver getInstance() {
+        if(instance == null)
+            instance = new DBDriver();
+
+        return instance;
+    }
+
+    private DBDriver() {
         ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
-        this.databaseIp = configurationParameters.getDatabaseIp();
-        this.databasePort = configurationParameters.getDatabasePort();
-        this.databaseUsername = configurationParameters.getDatabaseUsername();
-        this.databasePassword = configurationParameters.getDatabasePassword();
-        this.databaseName = configurationParameters.getDatabaseName();
+        databaseIp = configurationParameters.getDatabaseIp();
+        databasePort = configurationParameters.getDatabasePort();
+        databaseUsername = configurationParameters.getDatabaseUsername();
+        databasePassword = configurationParameters.getDatabasePassword();
+        databaseName = configurationParameters.getDatabaseName();
     }
 
     /**
@@ -32,13 +42,13 @@ public class DBDriver {
      *
      * @throws SQLException  in case the connection to the database fails.
      */
-    private static Connection getConnection() throws SQLException {
+    private Connection getConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:mysql://"+ databaseIp + ":" + databasePort +
                         "/" + databaseName + "?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=CET",
                 databaseUsername, databasePassword);
     }
 
-    public static void insertAirQualitySample(AirQualitySample airQualitySample) {
+    public void insertAirQualitySample(AirQualitySample airQualitySample) {
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO air_quality (node, concentration) VALUES (?, ?)")
@@ -58,7 +68,7 @@ public class DBDriver {
      * Insert a new sample received by a humidity sensor
      * @param humiditySample    sample to be inserted
      */
-    public static void insertHumiditySample (HumiditySample humiditySample) {
+    public void insertHumiditySample (HumiditySample humiditySample) {
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO humidity (node, percentage) VALUES (?, ?)")
@@ -74,7 +84,7 @@ public class DBDriver {
         }
     }
 
-    public static void insertPresenceSample(PresenceSample presenceSample) {
+    public void insertPresenceSample(PresenceSample presenceSample) {
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO presence (quantity) VALUES (?)")
@@ -89,7 +99,7 @@ public class DBDriver {
         }
     }
 
-    public static void insertTemperatureSample(TemperatureSample temperatureSample) {
+    public void insertTemperatureSample(TemperatureSample temperatureSample) {
         try (
                 Connection connection = getConnection();
                 PreparedStatement statement = connection.prepareStatement("INSERT INTO temperature (node, degrees) VALUES (?, ?)")

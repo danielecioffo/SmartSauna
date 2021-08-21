@@ -36,7 +36,7 @@ public class AirQuality {
                 int newCO2Level;
                 try {
                     newCO2Level = Integer.parseInt(responseString);
-                    DBDriver.insertAirQualitySample(new AirQualitySample(0, newCO2Level)); //TODO come si ottiene l'ID del nodo?
+                    DBDriver.getInstance().insertAirQualitySample(new AirQualitySample(0, newCO2Level)); //TODO come si ottiene l'ID del nodo?
                     int average = (co2Level.get()*(clientCO2SensorList.size() - 1) + newCO2Level)/(clientCO2SensorList.size()); 
                     co2Level.set(average);
                 } catch (Exception e) {
