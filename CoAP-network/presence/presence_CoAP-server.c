@@ -4,6 +4,7 @@
 
 #include "contiki.h"
 #include "sys/etimer.h"
+#include "dev/leds.h"
 #include "coap-engine.h"
 #include "coap-blocking-api.h"
 
@@ -75,6 +76,8 @@ PROCESS_THREAD(presence_server, ev, data)
 
 	static coap_endpoint_t server_ep;
     static coap_message_t request[1]; // This way the packet can be treated as pointer as usual
+
+    leds_set(LEDS_NUM_TO_MASK(LEDS_GREEN));
 
 	PROCESS_PAUSE();
 
