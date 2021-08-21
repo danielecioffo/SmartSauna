@@ -41,7 +41,7 @@ public class DBDriver {
     public void insertAirQualitySample(AirQualitySample airQualitySample) {
         try (
                 Connection connection = getConnection();
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO air_quality (node, concentration) VALUES (?, ?)");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO air_quality (node, concentration) VALUES (?, ?)")
         )
         {
             statement.setInt(1, airQualitySample.getNode());
@@ -55,13 +55,13 @@ public class DBDriver {
     }
 
     /**
-     * Insert a new sample received by an humidity sensor
+     * Insert a new sample received by a humidity sensor
      * @param humiditySample    sample to be inserted
      */
     public void insertHumiditySample (HumiditySample humiditySample) {
         try (
                 Connection connection = getConnection();
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO humidity (node, percentage) VALUES (?, ?)");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO humidity (node, percentage) VALUES (?, ?)")
         )
         {
             statement.setInt(1, humiditySample.getNode());
@@ -77,7 +77,7 @@ public class DBDriver {
     public void insertPresenceSample(PresenceSample presenceSample) {
         try (
                 Connection connection = getConnection();
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO presence (node, quantity) VALUES (?, ?)");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO presence (node, quantity) VALUES (?, ?)")
         )
         {
             statement.setInt(1, presenceSample.getNode());
@@ -93,7 +93,7 @@ public class DBDriver {
     public void insertTemperatureSample(TemperatureSample temperatureSample) {
         try (
                 Connection connection = getConnection();
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO temperature (node, degrees) VALUES (?, ?)");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO temperature (node, degrees) VALUES (?, ?)")
         )
         {
             statement.setInt(1, temperatureSample.getNode());
