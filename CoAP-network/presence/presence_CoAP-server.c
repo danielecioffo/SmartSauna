@@ -4,6 +4,7 @@
 
 #include "contiki.h"
 #include "sys/etimer.h"
+#include "dev/leds.h"
 #include "coap-engine.h"
 #include "coap-blocking-api.h"
 
