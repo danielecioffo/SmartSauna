@@ -5,6 +5,7 @@ import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
 import org.eclipse.californium.core.CoapResponse;
+import org.eclipse.californium.core.coap.MediaTypeRegistry;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -86,5 +87,19 @@ public class PresenceSensor {
 
     public void setMaxNumberOfPeople(int maxNumberOfPeople) {
         this.maxNumberOfPeople.set(maxNumberOfPeople);
+
+        String msg = Integer.toString(maxNumberOfPeople);
+        clientPresenceSensor.put(new CoapHandler() {
+            @Override
+            public void onLoad(CoapResponse coapResponse) {
+                if(!coapResponse.isSuccess())
+                    System.out.print("[ERROR] Presence Sensor: PUT request unsuccessful");
+            }
+
+            @Override
+            public void onError() {
+                System.err.print("[ERROR] Presence Sensor " + clientPresenceSensor.getURI() + "]");
+            }
+        }, msg, MediaTypeRegistry.TEXT_PLAIN);
     }
 }
