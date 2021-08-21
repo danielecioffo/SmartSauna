@@ -14,6 +14,7 @@ public class AirQuality {
     private CoapObserveRelation observeCO2;
 
     private AtomicInteger co2Level = new AtomicInteger(300);
+    private AtomicInteger upperBound = new AtomicInteger(700);
     private boolean ventilationOn = false;
 
     public void registerAirQuality(String ip) {
@@ -33,13 +34,15 @@ public class AirQuality {
                     System.out.print("\n[ERROR] The CO2 sensor gave non-significant data\n>");
                 }
 
-                if(!ventilationOn && co2Level.get() > 700) {
+                if(!ventilationOn && co2Level.get() > upperBound.get()) {
                     System.out.print("\n[AIR QUALITY] CO2 level is HIGH, the ventilation system is switched ON\n>");
                     ventilationSystemSwitch(true);
                     ventilationOn = true;
                 }
 
-                if (ventilationOn && co2Level.get()  < 700 - 0.3 * 700) {    // TODO metti parametro UPPER BOUND
+                // We don't turn off the ventilation as soon as the value is lower than the upper bound,
+                // but we leave a margin so that we don't have to turn on the system again right away
+                if (ventilationOn && co2Level.get()  < upperBound.get()*0.7) {
                     System.out.print("\n[AIR QUALITY] CO2 level is now fine. Switch OFF the ventilation system\n>");
                     ventilationSystemSwitch(false);
                     ventilationOn = false;
@@ -64,6 +67,10 @@ public class AirQuality {
 
     public int getCO2Level() {
         return co2Level.get();
+    }
+
+    public void setUpperBound(int upperBound) {
+        this.upperBound.set(upperBound);
     }
 
     private boolean ventilationSystemSwitch(boolean on) {

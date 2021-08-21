@@ -9,13 +9,14 @@ import org.eclipse.californium.core.CoapResponse;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PresenceSensor {
-    // TODO inserisci max number of people
     private CoapClient clientPresenceSensor;
     private CoapObserveRelation observePresence;
 
     private Light light;
     private AtomicInteger numberOfPeople = new AtomicInteger(0);
+    private AtomicInteger maxNumberOfPeople = new AtomicInteger(20);
     private boolean lightOn = false;
+    private boolean full = false;
 
     public void registerPresenceSensor(String ip) {
         System.out.print("\n[REGISTRATION] The presence sensor [" + ip + "] is now registered\n>");
@@ -48,6 +49,16 @@ public class PresenceSensor {
                         lightOn = false;
                     }
                 }
+
+                if(numberOfPeople.get() == maxNumberOfPeople.get()) {
+                    System.out.print("\n[PRESENCE] The sauna is FULL, it is not possible to enter\n>");
+                    full = true;
+                }
+
+                if(full && numberOfPeople.get() != maxNumberOfPeople.get()) {
+                    System.out.print("\n[PRESENCE] The sauna is no longer full, you can enter now\n>");
+                    full = false;
+                }
             }
 
             @Override
@@ -71,5 +82,9 @@ public class PresenceSensor {
 
     public int getNumberOfPeople() {
         return numberOfPeople.get();
+    }
+
+    public void setMaxNumberOfPeople(int maxNumberOfPeople) {
+        this.maxNumberOfPeople.set(maxNumberOfPeople);
     }
 }

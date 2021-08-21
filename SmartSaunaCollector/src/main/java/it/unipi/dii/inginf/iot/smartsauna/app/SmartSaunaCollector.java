@@ -50,16 +50,16 @@ public class SmartSaunaCollector {
                         getAirQualityFunction(coapRegistrationServer);
                         break;
                     case "!set_air_quality":
-                        setAirQualityFunction(parts);
+                        setAirQualityFunction(coapRegistrationServer, parts);
                         break;
                     case "!set_color":
                         setColorFunction(coapRegistrationServer, parts);
                         break;
                     case "!get_number_of_people":
-                        getNumberOfPeopleFunction();
+                        getNumberOfPeopleFunction(coapRegistrationServer);
                         break;
                     case "!set_max_number_of_people":
-                        setMaxNumberOfPeopleFunction(parts);
+                        setMaxNumberOfPeopleFunction(coapRegistrationServer, parts);
                         break;
                     case "!exit":
                         System.out.println("Bye!");
@@ -213,14 +213,14 @@ public class SmartSaunaCollector {
         System.out.println("The CO2 concentration in the sauna is " + co2 + " ppm\n");
     }
 
-    private static void setAirQualityFunction(String[] parts) {
+    private static void setAirQualityFunction(CoapRegistrationServer coapRegistrationServer, String[] parts) {
         if(parts.length != 2) {
             System.out.println("Incorrect use of the command. Please use !set_air_quality <upper bound>\n");
         } else {
             int upperBound;
             try {
                 upperBound = Integer.parseInt(parts[1]);
-                // TODO setta nuovo bound
+                coapRegistrationServer.setCO2UpperBound(upperBound);
                 System.out.println("New upper bound for CO2 level set correctly: " + upperBound + " ppm\n");
             }  catch(Exception e) {
             System.out.println("Please enter an integer\n");
@@ -232,15 +232,17 @@ public class SmartSaunaCollector {
         if(parts.length != 2) {
             System.out.println("Incorrect use of the command. Please use !set_color <color>\n");
         } else {
-            switch(parts[1]) {  // TODO imposta i colori effettivamente sulla luce
+            switch(parts[1]) {
                 case "GREEN":
                     coapRegistrationServer.setLightColor(LightColor.GREEN);
                     System.out.println("Light color correctly set to GREEN\n");
                     break;
                 case "RED":
+                    coapRegistrationServer.setLightColor(LightColor.RED);
                     System.out.println("Light color correctly set to RED\n");
                     break;
                 case "YELLOW":
+                    coapRegistrationServer.setLightColor(LightColor.YELLOW);
                     System.out.println("Light color correctly set to YELLOW\n");
                     break;
                 default:
@@ -250,20 +252,19 @@ public class SmartSaunaCollector {
         }
     }
 
-    private static void getNumberOfPeopleFunction() {
-        // TODO leggi numero di persone da sensore
-        int people = 10;
+    private static void getNumberOfPeopleFunction(CoapRegistrationServer coapRegistrationServer) {
+        int people = coapRegistrationServer.getNumberOfPeople();
         System.out.println("There are " + people + " people inside the sauna\n");
     }
 
-    private static void setMaxNumberOfPeopleFunction(String[] parts) {
+    private static void setMaxNumberOfPeopleFunction(CoapRegistrationServer coapRegistrationServer, String[] parts) {
         if(parts.length != 2) {
             System.out.println("Incorrect use of the command. Please use !set_max_number_of_people <number>\n");
         } else {
             int max;
             try {
                 max = Integer.parseInt(parts[1]);
-                // TODO imposta il nuovo bound
+                coapRegistrationServer.setMaxNumberOfPeople(max);
                 System.out.println("New maximum number of people set correctly: " + max +"\n");
             } catch(Exception e) {
                 System.out.println("Please enter an integer value");

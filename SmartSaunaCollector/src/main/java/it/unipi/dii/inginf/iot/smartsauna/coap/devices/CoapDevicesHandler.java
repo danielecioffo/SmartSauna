@@ -61,4 +61,14 @@ public class CoapDevicesHandler {
         light.changeLightColor(lightColor);
     }
 
+    public void setMaxNumberOfPeople(int maxNumberOfPeople) {
+        presenceSensor.setMaxNumberOfPeople(maxNumberOfPeople);
+    }
+
+    public void setCO2UpperBound(int upperBound) {
+        airQuality.setUpperBound(upperBound);
+    }
+
+
+
 }

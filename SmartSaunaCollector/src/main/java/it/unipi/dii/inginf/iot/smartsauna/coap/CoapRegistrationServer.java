@@ -31,6 +31,14 @@ public class CoapRegistrationServer extends CoapServer {
         coapDevicesHandler.setLightColor(lightColor);
     }
 
+    public void setMaxNumberOfPeople(int maxNumberOfPeople0) {
+        coapDevicesHandler.setMaxNumberOfPeople(maxNumberOfPeople0);
+    }
+
+    public void setCO2UpperBound(int co2UpperBound) {
+        coapDevicesHandler.setCO2UpperBound(co2UpperBound);
+    }
+
     class CoapRegistrationResource extends CoapResource {
         public CoapRegistrationResource() {
             super("registration");
