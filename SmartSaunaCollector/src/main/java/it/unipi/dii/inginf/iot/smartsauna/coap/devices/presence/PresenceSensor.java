@@ -32,7 +32,7 @@ public class PresenceSensor {
                 int newNumberOfPeople;
                 try {
                     newNumberOfPeople = Integer.parseInt(responseString);
-                    DBDriver.insertPresenceSample(new PresenceSample(0, newNumberOfPeople)); // TODO come si ottiene l'ID del nodo?
+                    DBDriver.insertPresenceSample(new PresenceSample(newNumberOfPeople));
                     numberOfPeople.set(newNumberOfPeople);
                 } catch(Exception e) {
                     System.out.print("\n[ERROR] The presence sensor gave non-significant data\n>");

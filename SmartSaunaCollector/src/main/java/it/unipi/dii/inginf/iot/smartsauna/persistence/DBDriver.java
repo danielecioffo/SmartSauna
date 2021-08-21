@@ -77,11 +77,10 @@ public class DBDriver {
     public static void insertPresenceSample(PresenceSample presenceSample) {
         try (
                 Connection connection = getConnection();
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO presence (node, quantity) VALUES (?, ?)")
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO presence (quantity) VALUES (?)")
         )
         {
-            statement.setInt(1, presenceSample.getNode());
-            statement.setInt(2, presenceSample.getQuantity());
+            statement.setInt(1, presenceSample.getQuantity());
             statement.executeUpdate();
         }
         catch (final SQLException e)
