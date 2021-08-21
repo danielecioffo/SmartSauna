@@ -33,7 +33,7 @@ static bool update_co2 () { // simulate the behavior of the real sensor
     int value = 0;
 
 	if(ventilation_on) {	// If the ventilation system is turned on, air quality improves
-	    value = rand()*7 + 6; // a random number in [6;12]
+	    value = rand()%7 + 6; // a random number in [6;12]
 		co2_level = (int) (co2_level - value);
 	}
 
