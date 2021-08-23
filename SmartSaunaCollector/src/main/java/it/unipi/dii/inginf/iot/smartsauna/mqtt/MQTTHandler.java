@@ -98,7 +98,8 @@ public class MQTTHandler implements MqttCallback {
             HumiditySample humiditySample = parser.fromJson(payload, HumiditySample.class);
             humidityCollector.addHumiditySample(humiditySample);
             float newAverage = humidityCollector.getAverage();
-            if (newAverage < humidityCollector.getLowerBoundHumidity())
+            float midRange = humidityCollector.getMidRange();
+            if (newAverage < (humidityCollector.getLowerBoundHumidity() + (midRange - humidityCollector.getLowerBoundHumidity())/2))
             {
                 if (!humidityCollector.getLastCommand().equals(humidityCollector.INC))
                 {
@@ -109,7 +110,7 @@ public class MQTTHandler implements MqttCallback {
                 else
                     System.out.println("Average level of Humidity too low: " + newAverage + "%, but is increasing");
             }
-            else if (newAverage > humidityCollector.getUpperBoundHumidity())
+            else if (newAverage > (humidityCollector.getUpperBoundHumidity() - (humidityCollector.getUpperBoundHumidity() - midRange)/2))
             {
                 if (!humidityCollector.getLastCommand().equals(humidityCollector.DEC))
                 {
@@ -139,7 +140,8 @@ public class MQTTHandler implements MqttCallback {
             TemperatureSample temperatureSample = parser.fromJson(payload, TemperatureSample.class);
             temperatureCollector.addTemperatureSample(temperatureSample);
             float newAverage = temperatureCollector.getAverage();
-            if (newAverage < temperatureCollector.getLowerBoundTemperature())
+            float midRange = temperatureCollector.getMidRange();
+            if (newAverage < (temperatureCollector.getLowerBoundTemperature() + (midRange - temperatureCollector.getLowerBoundTemperature())/2))
             {
                 if (!temperatureCollector.getLastCommand().equals(humidityCollector.INC))
                 {
@@ -150,7 +152,7 @@ public class MQTTHandler implements MqttCallback {
                 else
                     System.out.println("Average level of Temperature too low: " + newAverage + "°C, but is increasing");
             }
-            else if (newAverage > temperatureCollector.getUpperBoundTemperature())
+            else if (newAverage > (temperatureCollector.getUpperBoundTemperature() - (temperatureCollector.getUpperBoundTemperature()) - midRange/2))
             {
                 if (!temperatureCollector.getLastCommand().equals(humidityCollector.DEC))
                 {

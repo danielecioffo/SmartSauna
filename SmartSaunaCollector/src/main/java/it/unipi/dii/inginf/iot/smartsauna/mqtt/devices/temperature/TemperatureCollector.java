@@ -3,6 +3,7 @@ package it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.temperature;
 import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
 import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
 import it.unipi.dii.inginf.iot.smartsauna.model.TemperatureSample;
+import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +29,20 @@ public class TemperatureCollector {
         lastCommand = OFF;
     }
 
+    /**
+     * Function that adds a new temperature sample
+     * @param temperatureSample    temperature sample received
+     */
     public void addTemperatureSample (TemperatureSample temperatureSample)
     {
         lastTemperatureSamples.put(temperatureSample.getNode(), temperatureSample);
-        System.out.println(temperatureSample);
+        //DBDriver.getInstance().insertTemperatureSample(temperatureSample);
     }
 
+    /**
+     * Function that computes the average of the last temperature samples received
+     * @return  the computed average
+     */
     public float getAverage ()
     {
         int howMany = lastTemperatureSamples.size();
@@ -41,6 +50,15 @@ public class TemperatureCollector {
                 .map(TemperatureSample::getTemperature) // take only the temperature
                 .reduce((float) 0, Float::sum); // sum the values
         return sum / howMany;
+    }
+
+    /**
+     * Function used to compute the mid range of the interval [lowerBoundTemperature, upperBoundTemperature]
+     * @return the mid range of the interval
+     */
+    public float getMidRange ()
+    {
+        return (lowerBoundTemperature + upperBoundTemperature) / 2;
     }
 
     public float getLowerBoundTemperature() {

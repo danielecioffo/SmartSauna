@@ -2,6 +2,7 @@ package it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.humidity;
 
 import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
 import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
+import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 import sun.security.krb5.Config;
 
 import java.util.HashMap;
@@ -28,12 +29,20 @@ public class HumidityCollector {
         lastCommand = OFF;
     }
 
+    /**
+     * Function that adds a new humidity sample
+     * @param humiditySample    humidity sample received
+     */
     public void addHumiditySample (HumiditySample humiditySample)
     {
         lastHumiditySamples.put(humiditySample.getNode(), humiditySample);
-        System.out.println(humiditySample);
+        //DBDriver.getInstance().insertHumiditySample(humiditySample);
     }
 
+    /**
+     * Function that computes the average of the last humidity samples received
+     * @return  the computed average
+     */
     public float getAverage ()
     {
         int howMany = lastHumiditySamples.size();
@@ -41,6 +50,15 @@ public class HumidityCollector {
                 .map(HumiditySample::getHumidity) // take only the humidity
                 .reduce((float) 0, Float::sum); // sum the values
         return sum / howMany;
+    }
+
+    /**
+     * Function used to compute the mid range of the interval [lowerBoundHumidity, upperBoundHumidity]
+     * @return the mid range of the interval
+     */
+    public float getMidRange ()
+    {
+        return (lowerBoundHumidity + upperBoundHumidity) / 2;
     }
 
     public float getLowerBoundHumidity() {
