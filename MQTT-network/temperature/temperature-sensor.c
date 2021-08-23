@@ -245,6 +245,7 @@ PROCESS_THREAD(temperature_sensor_process, ev, data) {
 			} 
 			else if ( state == STATE_DISCONNECTED ){
 				LOG_ERR("Disconnected from MQTT broker\n");	
+				state = STATE_INIT;
 			}
 			etimer_set(&periodic_timer, PUBLISH_INTERVAL);
 		}

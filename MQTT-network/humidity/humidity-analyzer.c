@@ -288,7 +288,8 @@ PROCESS_THREAD(humidity_analyzer_process, ev, data)
 			} 
 			else if ( state == STATE_DISCONNECTED )
 			{
-				LOG_ERR("Disconnected from MQTT broker\n");	
+				LOG_ERR("Disconnected from MQTT broker\n");
+				state = STATE_INIT;	
 			}
 			etimer_set(&periodic_timer, PUBLISH_INTERVAL);
 		}

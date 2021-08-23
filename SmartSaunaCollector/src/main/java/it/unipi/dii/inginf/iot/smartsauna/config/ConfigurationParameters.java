@@ -13,6 +13,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 /**
  * Class used to store the configuration parameters retrieved from the config.xml
@@ -53,6 +54,7 @@ public class ConfigurationParameters {
     private static ConfigurationParameters readConfigurationParameters() {
         if (validConfigurationParameters()) {
             XStream xs = new XStream();
+	    xs.addPermission(AnyTypePermission.ANY);
 
             String text = null;
             try {
