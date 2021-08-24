@@ -3,6 +3,8 @@
 
 /* Enable TCP */
 #define UIP_CONF_TCP 1
+#undef IEEE802154_CONF_PANID
+#define IEEE802154_CONF_PANID 0x0022
 
 #define LOG_LEVEL_APP LOG_LEVEL_DBG
 
