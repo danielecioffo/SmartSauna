@@ -47,8 +47,8 @@ static uint8_t state;
 #define STATE_SUBSCRIBED      	4	// Topics subscription done
 #define STATE_DISCONNECTED    	5	// Disconnected from MQTT broker
 
-PROCESS_NAME(temperature_sensor_process);
-AUTOSTART_PROCESSES(&temperature_sensor_process);
+PROCESS_NAME(process_for_temperature_sensor);
+AUTOSTART_PROCESSES(&process_for_temperature_sensor);
 
 /* Maximum TCP segment size for outgoing segments of our socket */
 #define MAX_TCP_SEGMENT_SIZE    32
@@ -78,7 +78,7 @@ static struct mqtt_message *msg_ptr = 0;
 
 static struct mqtt_connection conn;
 
-PROCESS(temperature_sensor_process, "Temperature sensor process");
+PROCESS(process_for_temperature_sensor, "Temperature sensor process");
 
 static bool increase_temperature = false;
 static bool decrease_temperature = false;
@@ -121,7 +121,7 @@ static void mqtt_event(struct mqtt_connection *m, mqtt_event_t event, void *data
 		{
 			printf("MQTT connection disconnected. Reason: %u\n", *((mqtt_event_t *)data));
 			state = STATE_DISCONNECTED;
-			process_poll(&temperature_sensor_process);
+			process_poll(&process_for_temperature_sensor);
 			break;
 		}
 		case MQTT_EVENT_PUBLISH: 
@@ -170,7 +170,7 @@ static bool have_connectivity(void) {
 	return true;
 }
 
-PROCESS_THREAD(temperature_sensor_process, ev, data) {
+PROCESS_THREAD(process_for_temperature_sensor, ev, data) {
 
 	PROCESS_BEGIN();
 
@@ -184,7 +184,7 @@ PROCESS_THREAD(temperature_sensor_process, ev, data) {
 		     linkaddr_node_addr.u8[6], linkaddr_node_addr.u8[7]);
 
 	// Broker registration					 
-	mqtt_register(&conn, &temperature_sensor_process, client_id, mqtt_event, MAX_TCP_SEGMENT_SIZE);
+	mqtt_register(&conn, &process_for_temperature_sensor, client_id, mqtt_event, MAX_TCP_SEGMENT_SIZE);
 			
 	state=STATE_INIT;
 				    
