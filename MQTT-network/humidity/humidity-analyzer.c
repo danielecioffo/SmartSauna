@@ -85,6 +85,7 @@ static bool decrease_humidity = false;
 #define MIN_HUMIDITY 0
 #define MAX_HUMIDITY 100
 static int humidity_percentage = 50; // we cannot use float value in the testbed
+static int variation = 0;
 
 // Function called for handling an incoming message
 static void pub_handler(const char *topic, uint16_t topic_len, const uint8_t *chunk, uint16_t chunk_len)
@@ -245,9 +246,8 @@ PROCESS_THREAD(humidity_analyzer_process, ev, data)
 			if(state == STATE_SUBSCRIBED)
 			{
 				sprintf(pub_topic, "%s", "humidity");
-				srand(time(NULL));
-				// simulate the behavior of the sensor				
-				int variation;				
+
+				// simulate the behavior of the sensor								
 				if (increase_humidity || decrease_humidity)
 				{
 					variation = (rand()%10)+1; 	// a value in [1,10]

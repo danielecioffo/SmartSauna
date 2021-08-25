@@ -83,6 +83,7 @@ PROCESS(process_for_temperature_sensor, "Temperature sensor process");
 static bool increase_temperature = false;
 static bool decrease_temperature = false;
 static int temperature = 50; // we cannot use float value in the testbed
+static int variation = 0;
 
 // Function called for handling an incoming message
 static void pub_handler(const char *topic, uint16_t topic_len, const uint8_t *chunk, uint16_t chunk_len) {
@@ -222,10 +223,7 @@ PROCESS_THREAD(process_for_temperature_sensor, ev, data) {
 			if(state == STATE_SUBSCRIBED) {	
 				sprintf(pub_topic, "%s", "temperature");
 				
-				// simulate the behavior of the sensor
-				srand(time(NULL));
-				int variation; 				
-		
+				// simulate the behavior of the sensor				
 				if (increase_temperature || decrease_temperature) {
 					variation = rand()%3; 	// a value in [0,2]
 					temperature = (increase_temperature) ? (temperature + variation) : (temperature - variation);
