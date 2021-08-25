@@ -143,7 +143,7 @@ public class MQTTHandler implements MqttCallback {
             float midRange = temperatureCollector.getMidRange();
             if (newAverage < (temperatureCollector.getLowerBoundTemperature() + (midRange - temperatureCollector.getLowerBoundTemperature())/2))
             {
-                if (!temperatureCollector.getLastCommand().equals(humidityCollector.INC))
+                if (!temperatureCollector.getLastCommand().equals(temperatureCollector.INC))
                 {
                     System.out.println("Average level of Temperature too low: " + newAverage + "°C, increase it");
                     publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.INC);
@@ -152,9 +152,9 @@ public class MQTTHandler implements MqttCallback {
                 else
                     System.out.println("Average level of Temperature too low: " + newAverage + "°C, but is increasing");
             }
-            else if (newAverage > (temperatureCollector.getUpperBoundTemperature() - (temperatureCollector.getUpperBoundTemperature()) - midRange/2))
+            else if (newAverage > (temperatureCollector.getUpperBoundTemperature() - (temperatureCollector.getUpperBoundTemperature() - midRange)/2))
             {
-                if (!temperatureCollector.getLastCommand().equals(humidityCollector.DEC))
+                if (!temperatureCollector.getLastCommand().equals(temperatureCollector.DEC))
                 {
                     System.out.println("Average level of Temperature too high: " + newAverage + "°C, decrease it");
                     publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.DEC);
@@ -165,7 +165,7 @@ public class MQTTHandler implements MqttCallback {
             }
             else
             {
-                if (!temperatureCollector.getLastCommand().equals(humidityCollector.OFF))
+                if (!temperatureCollector.getLastCommand().equals(temperatureCollector.OFF))
                 {
                     System.out.println("Correct average temperature level: " + newAverage +"°C, switch off the AC");
                     publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.OFF);

@@ -1,0 +1,29 @@
+MQTT network:
+
+sudo ssh -i ~/key -p 2022 user@iot.dii.unipi.it
+cd contiki-ng/examples/rpl-border-router
+make TARGET=nrf52840 BOARD=dongle border-router.dfu-upload PORT=/dev/ttyACM22
+make TARGET=nrf52840 BOARD=dongle connect-router PORT=/dev/ttyACM22
+
+sudo ssh -i ~/key -p 2022 user@iot.dii.unipi.it
+sudo mosquitto -c /etc/mosquitto/mosquitto.conf
+
+sudo ssh -i ~/key -p 2022 user@iot.dii.unipi.it
+cd contiki-ng/examples/humidity/
+make TARGET=nrf52840 BOARD=dongle humidity-analyzer.dfu-upload PORT=/dev/ttyACM74
+make login TARGET=nrf52840 BOARD=dongle PORT=/dev/ttyACM74
+
+sudo ssh -i ~/key -p 2023 user@iot.dii.unipi.it
+cd contiki-ng/examples/temperature/
+make TARGET=nrf52840 BOARD=dongle temperature-device.dfu-upload PORT=/dev/ttyACM23
+make login TARGET=nrf52840 BOARD=dongle PORT=/dev/ttyACM23
+
+Collector:
+
+sudo systemctl stop mosquitto.service
+ssh -L 1883:127.0.0.1:1883 -p 2022 -i ~/key user@iot.dii.unipi.it
+cd Documents/SmartSauna/SmartSaunaCollector/
+mvn install
+java -jar target/SmartSaunaCollector-1.0-SNAPSHOT.jar
+
+
