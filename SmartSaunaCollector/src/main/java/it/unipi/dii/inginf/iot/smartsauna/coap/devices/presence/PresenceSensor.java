@@ -1,6 +1,8 @@
 package it.unipi.dii.inginf.iot.smartsauna.coap.devices.presence;
 
+import com.google.gson.Gson;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.light.Light;
+import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
 import it.unipi.dii.inginf.iot.smartsauna.model.PresenceSample;
 import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 import org.eclipse.californium.core.CoapClient;
@@ -21,6 +23,8 @@ public class PresenceSensor {
     private boolean lightOn = false;
     private boolean full = false;
 
+    private Gson parser = new Gson();
+
     public void registerPresenceSensor(String ip) {
         System.out.print("\n[REGISTRATION] The presence sensor [" + ip + "] is now registered\n>");
         clientPresenceSensor = new CoapClient("coap://[" + ip + "]/presence");
@@ -29,11 +33,10 @@ public class PresenceSensor {
             @Override
             public void onLoad(CoapResponse coapResponse) {
                 String responseString = coapResponse.getResponseText();
-                int newNumberOfPeople;
                 try {
-                    newNumberOfPeople = Integer.parseInt(responseString);
-                    DBDriver.getInstance().insertPresenceSample(new PresenceSample(newNumberOfPeople));
-                    numberOfPeople.set(newNumberOfPeople);
+                    PresenceSample presenceSample = parser.fromJson(responseString, PresenceSample.class);
+                    DBDriver.getInstance().insertPresenceSample(presenceSample);
+                    numberOfPeople.set(presenceSample.getQuantity());
                 } catch(Exception e) {
                     System.out.print("\n[ERROR] The presence sensor gave non-significant data\n>");
                 }

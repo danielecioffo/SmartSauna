@@ -1,5 +1,6 @@
 package it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality;
 
+import com.google.gson.Gson;
 import it.unipi.dii.inginf.iot.smartsauna.model.AirQualitySample;
 import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 import org.eclipse.californium.core.CoapClient;
@@ -21,6 +22,8 @@ public class AirQuality {
     private AtomicInteger upperBound = new AtomicInteger(700);
     private boolean ventilationOn = false;
 
+    private Gson parser = new Gson();
+
     public void registerAirQuality(String ip) {
         System.out.print("\n[REGISTRATION] The Air Quality system: [" + ip + "] is now registered\n>");
         CoapClient newClientCO2Sensor = new CoapClient("coap://[" + ip + "]/air_quality/co2");
@@ -33,11 +36,10 @@ public class AirQuality {
             @Override
             public void onLoad(CoapResponse coapResponse) {
                 String responseString = coapResponse.getResponseText();
-                int newCO2Level;
                 try {
-                    newCO2Level = Integer.parseInt(responseString);
-                    DBDriver.getInstance().insertAirQualitySample(new AirQualitySample(0, newCO2Level)); //TODO come si ottiene l'ID del nodo?
-                    int average = (co2Level.get()*(clientCO2SensorList.size() - 1) + newCO2Level)/(clientCO2SensorList.size()); 
+                    AirQualitySample airQualitySample = parser.fromJson(responseString, AirQualitySample.class);
+                    DBDriver.getInstance().insertAirQualitySample(airQualitySample);
+                    int average = (co2Level.get()*(clientCO2SensorList.size() - 1) + airQualitySample.getConcentration())/(clientCO2SensorList.size());
                     co2Level.set(average);
                 } catch (Exception e) {
                     System.out.print("\n[ERROR] The CO2 sensor gave non-significant data\n>");

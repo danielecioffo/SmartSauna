@@ -1,9 +1,11 @@
 package it.unipi.dii.inginf.iot.smartsauna.model;
 
 public class PresenceSample {
+    private int node;
     private int quantity;
 
-    public PresenceSample(int quantity) {
+    public PresenceSample(int node, int quantity) {
+        this.node = node;
         this.quantity = quantity;
     }
 
@@ -20,5 +22,13 @@ public class PresenceSample {
         return "PresenceSample{ " +
                 "quantity=" + quantity +
                 '}';
+    }
+
+    public int getNode() {
+        return node;
+    }
+
+    public void setNode(int node) {
+        this.node = node;
     }
 }

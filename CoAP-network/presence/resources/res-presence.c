@@ -70,7 +70,7 @@ static void presence_event_handler(void)
 static void presence_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 {
   	coap_set_header_content_format(response, TEXT_PLAIN);
-  	coap_set_payload(response, buffer, snprintf((char *)buffer, preferred_size, "%u", (unsigned int) number_of_people));
+  	coap_set_payload(response, buffer, snprintf((char *)buffer, preferred_size, "{\"node\": %d, \"quantity\": %d}", node_id, (unsigned int) number_of_people));
 }
 
 static void presence_put_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
