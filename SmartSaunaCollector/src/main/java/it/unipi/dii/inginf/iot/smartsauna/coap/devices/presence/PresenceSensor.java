@@ -25,7 +25,7 @@ public class PresenceSensor {
 
     private Gson parser;
 
-    public void PresenceSensor() {
+    public PresenceSensor() {
         numberOfPeople = new AtomicInteger(0);
         ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
         maxNumberOfPeople = new AtomicInteger(configurationParameters.getMaxNumberOfPeople());
