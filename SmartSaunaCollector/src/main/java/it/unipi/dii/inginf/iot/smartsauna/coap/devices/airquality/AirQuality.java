@@ -1,6 +1,7 @@
 package it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality;
 
 import com.google.gson.Gson;
+import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
 import it.unipi.dii.inginf.iot.smartsauna.model.AirQualitySample;
 import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 import org.eclipse.californium.core.CoapClient;
@@ -19,7 +20,7 @@ public class AirQuality {
     private List<CoapObserveRelation> observeCO2List = new ArrayList<>();
 
     private AtomicInteger co2Level = new AtomicInteger(300);
-    private AtomicInteger upperBound = new AtomicInteger(700);
+    private AtomicInteger upperBound = new AtomicInteger(ConfigurationParameters.getInstance().getUpperBoundAirQuality());
     private boolean ventilationOn = false;
 
     private Gson parser = new Gson();
