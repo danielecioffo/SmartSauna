@@ -32,7 +32,7 @@ public class PresenceSensor {
         observePresence = clientPresenceSensor.observe(new CoapHandler() {
             @Override
             public void onLoad(CoapResponse coapResponse) {
-                String responseString = coapResponse.getResponseText();
+                String responseString = new String(coapResponse.getPayload());
                 System.out.println(responseString);
                 try {
                     PresenceSample presenceSample = parser.fromJson(responseString, PresenceSample.class);

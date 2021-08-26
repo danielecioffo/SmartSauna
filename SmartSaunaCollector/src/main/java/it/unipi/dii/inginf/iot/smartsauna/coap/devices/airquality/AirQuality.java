@@ -35,7 +35,7 @@ public class AirQuality {
         CoapObserveRelation newObserveCO2 = newClientCO2Sensor.observe(new CoapHandler() {
             @Override
             public void onLoad(CoapResponse coapResponse) {
-                String responseString = coapResponse.getResponseText();
+                String responseString = new String(coapResponse.getPayload());
                 System.out.println(responseString);
                 try {
                     AirQualitySample airQualitySample = parser.fromJson(responseString, AirQualitySample.class);
