@@ -61,7 +61,7 @@ static void co2_event_handler(void) {
 static void co2_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset) {
   	  	char message[64];
       	int length = 64;
-      	snprintf(message, length, "{\"node\": %d, \"concentration\": %d}", node_id, (unsigned int) co2_level);
+      	snprintf(message, length, "{\"node\": %d, \"concentration\": %d}", (unsigned int) node_id, (unsigned int) co2_level);
 
       	size_t len = strlen(message);
       	memcpy(buffer, (const void *) message, len);
