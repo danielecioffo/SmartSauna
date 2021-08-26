@@ -36,7 +36,7 @@ public class HumidityCollector {
     public void addHumiditySample (HumiditySample humiditySample)
     {
         lastHumiditySamples.put(humiditySample.getNode(), humiditySample);
-        //DBDriver.getInstance().insertHumiditySample(humiditySample);
+        DBDriver.getInstance().insertHumiditySample(humiditySample);
     }
 
     /**

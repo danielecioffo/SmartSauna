@@ -36,7 +36,7 @@ public class TemperatureCollector {
     public void addTemperatureSample (TemperatureSample temperatureSample)
     {
         lastTemperatureSamples.put(temperatureSample.getNode(), temperatureSample);
-        //DBDriver.getInstance().insertTemperatureSample(temperatureSample);
+        DBDriver.getInstance().insertTemperatureSample(temperatureSample);
     }
 
     /**

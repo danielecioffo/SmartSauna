@@ -1,3 +1,8 @@
+CoAP Network:
+
+cd contiki-ng/examples/rpl-border-router/
+make TARGET=cooja connect-router-cooja
+
 MQTT network:
 
 sudo ssh -i ~/key -p 2022 user@iot.dii.unipi.it
@@ -21,9 +26,16 @@ make login TARGET=nrf52840 BOARD=dongle PORT=/dev/ttyACM23
 Collector:
 
 sudo systemctl stop mosquitto.service
-ssh -L 1883:127.0.0.1:1883 -p 2022 -i ~/key user@iot.dii.unipi.it
-cd Documents/SmartSauna/SmartSaunaCollector/
-mvn install
-java -jar target/SmartSaunaCollector-1.0-SNAPSHOT.jar
+sudo ssh -L 1883:127.0.0.1:1883 -p 2022 -i ~/key user@iot.dii.unipi.it
+
+
+Per testare:
+mosquitto_sub -h fd00::1 -t humidity
+mosquitto_pub -h fd00::1 -t humidifier -m INC
+
+MySQL:
+mysql -u root -proot
+use smart_sauna
+
 
 

@@ -1,6 +1,5 @@
 package it.unipi.dii.inginf.iot.smartsauna.persistence;
 
-import it.unipi.dii.inginf.iot.smartsauna.coap.devices.CoapDevicesHandler;
 import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
 import it.unipi.dii.inginf.iot.smartsauna.model.AirQualitySample;
 import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
@@ -48,6 +47,10 @@ public class DBDriver {
                 databaseUsername, databasePassword);
     }
 
+    /**
+     * Insert the new sample received by the Air Quality sensor
+     * @param airQualitySample  sample to be received
+     */
     public void insertAirQualitySample(AirQualitySample airQualitySample) {
         try (
                 Connection connection = getConnection();
@@ -65,7 +68,7 @@ public class DBDriver {
     }
 
     /**
-     * Insert a new sample received by a humidity sensor
+     * Insert a new sample received by the humidity sensor
      * @param humiditySample    sample to be inserted
      */
     public void insertHumiditySample (HumiditySample humiditySample) {
@@ -84,6 +87,10 @@ public class DBDriver {
         }
     }
 
+    /**
+     * Insert a new sample received by the presence sensor
+     * @param presenceSample    sample to be inserted
+     */
     public void insertPresenceSample(PresenceSample presenceSample) {
         try (
                 Connection connection = getConnection();
@@ -99,6 +106,10 @@ public class DBDriver {
         }
     }
 
+    /**
+     * Insert a new sample received by the temperature sensor
+     * @param temperatureSample     sample to be inserted
+     */
     public void insertTemperatureSample(TemperatureSample temperatureSample) {
         try (
                 Connection connection = getConnection();
