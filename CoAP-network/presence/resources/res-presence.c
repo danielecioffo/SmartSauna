@@ -72,7 +72,7 @@ static void presence_get_handler(coap_message_t *request, coap_message_t *respon
   	int length = 64;
   	sprintf(message, length, "{\"node\": %d, \"quantity\": %d}", node_id, (unsigned int) number_of_people);
 
-  	size_t len = strlen(msg);
+  	size_t len = strlen(message);
   	memcopy(buffer, (const void *) message, len);
 
   	coap_set_header_content_format(response, TEXT_PLAIN);

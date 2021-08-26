@@ -60,7 +60,7 @@ static void co2_get_handler(coap_message_t *request, coap_message_t *response, u
       	int length = 64;
       	sprintf(message, length, "{\"node\": %d, \"concentration\": %d}", node_id, (unsigned int) co2_level);
 
-      	size_t len = strlen(msg);
+      	size_t len = strlen(message);
       	memcopy(buffer, (const void *) message, len);
 
       	coap_set_header_content_format(response, TEXT_PLAIN);
