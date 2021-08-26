@@ -71,7 +71,7 @@ static void presence_event_handler(void)
 static void presence_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset) {
   	char message[64];
   	int length = 64;
-  	sprintf(message, length, "{\"node\": %d, \"quantity\": %d}", node_id, (unsigned int) number_of_people);
+  	snprintf(message, length, "{\"node\": %d, \"quantity\": %d}", node_id, (unsigned int) number_of_people);
 
   	size_t len = strlen(message);
   	memcopy(buffer, (const void *) message, len);
