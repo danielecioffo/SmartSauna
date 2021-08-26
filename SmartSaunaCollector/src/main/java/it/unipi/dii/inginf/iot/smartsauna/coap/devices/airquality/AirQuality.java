@@ -19,11 +19,18 @@ public class AirQuality {
     private List<CoapClient> clientVentilationSystemList = new ArrayList<>();
     private List<CoapObserveRelation> observeCO2List = new ArrayList<>();
 
-    private AtomicInteger co2Level = new AtomicInteger(300);
-    private AtomicInteger upperBound = new AtomicInteger(ConfigurationParameters.getInstance().getUpperBoundAirQuality());
+    private AtomicInteger co2Level;
+    private AtomicInteger upperBound;
     private boolean ventilationOn = false;
 
-    private Gson parser = new Gson();
+    private Gson parser;
+
+    public AirQuality() {
+        co2Level = new AtomicInteger(300);
+        ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
+        upperBound = new AtomicInteger(configurationParameters.getUpperBoundAirQuality());
+        parser = new Gson();
+    }
 
     public void registerAirQuality(String ip) {
         System.out.print("\n[REGISTRATION] The Air Quality system: [" + ip + "] is now registered\n>");

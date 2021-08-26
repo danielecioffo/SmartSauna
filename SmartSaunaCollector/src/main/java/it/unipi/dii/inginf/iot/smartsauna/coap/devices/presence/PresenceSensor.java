@@ -2,7 +2,7 @@ package it.unipi.dii.inginf.iot.smartsauna.coap.devices.presence;
 
 import com.google.gson.Gson;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.light.Light;
-import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
+import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
 import it.unipi.dii.inginf.iot.smartsauna.model.PresenceSample;
 import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 import org.eclipse.californium.core.CoapClient;
@@ -18,12 +18,19 @@ public class PresenceSensor {
     private CoapObserveRelation observePresence;
 
     private Light light;
-    private AtomicInteger numberOfPeople = new AtomicInteger(0);
-    private AtomicInteger maxNumberOfPeople = new AtomicInteger(20);
+    private AtomicInteger numberOfPeople;
+    private AtomicInteger maxNumberOfPeople;
     private boolean lightOn = false;
     private boolean full = false;
 
-    private Gson parser = new Gson();
+    private Gson parser;
+
+    public void PresenceSensor() {
+        numberOfPeople = new AtomicInteger(0);
+        ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
+        maxNumberOfPeople = new AtomicInteger(configurationParameters.getMaxNumberOfPeople());
+        parser = new Gson();
+    }
 
     public void registerPresenceSensor(String ip) {
         System.out.print("\n[REGISTRATION] The presence sensor [" + ip + "] is now registered\n>");
