@@ -33,6 +33,7 @@ public class PresenceSensor {
             @Override
             public void onLoad(CoapResponse coapResponse) {
                 String responseString = coapResponse.getResponseText();
+                System.out.println(responseString);
                 try {
                     PresenceSample presenceSample = parser.fromJson(responseString, PresenceSample.class);
                     DBDriver.getInstance().insertPresenceSample(presenceSample);
