@@ -67,7 +67,7 @@ public class AirQuality {
 
             @Override
             public void onError() {
-                System.err.print("\n[ERROR] Air Quality" + newClientCO2Sensor.getURI() + "]\n>");
+                System.err.print("\n[ERROR] Air Quality " + newClientCO2Sensor.getURI() + "]\n>");
             }
         });
 

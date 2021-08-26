@@ -71,7 +71,7 @@ public class PresenceSensor {
 
             @Override
             public void onError() {
-                System.err.print("\n[ERROR] Presence sensor" + clientPresenceSensor.getURI() + "]\n>");
+                System.err.print("\n[ERROR] Presence sensor " + clientPresenceSensor.getURI() + "]\n>");
             }
         });
     }
