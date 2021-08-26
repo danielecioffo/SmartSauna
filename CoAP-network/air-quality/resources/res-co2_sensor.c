@@ -57,5 +57,5 @@ static void co2_event_handler(void) {
 
 static void co2_get_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset) {
   	coap_set_header_content_format(response, TEXT_PLAIN);
-  	coap_set_payload(response, buffer, snprintf((char *)buffer, preferred_size, "{\"node\": %d, \"concentration\": %d", node_id, (unsigned int) co2_level));
+  	coap_set_payload(response, buffer, snprintf((char *)buffer, preferred_size, "{\"node\": %d, \"concentration\": %d}", node_id, (unsigned int) co2_level));
 }
