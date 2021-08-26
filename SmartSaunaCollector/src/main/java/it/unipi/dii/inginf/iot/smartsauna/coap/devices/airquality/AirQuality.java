@@ -36,7 +36,6 @@ public class AirQuality {
             @Override
             public void onLoad(CoapResponse coapResponse) {
                 String responseString = new String(coapResponse.getPayload());
-                System.out.println(responseString);
                 try {
                     AirQualitySample airQualitySample = parser.fromJson(responseString, AirQualitySample.class);
                     DBDriver.getInstance().insertAirQualitySample(airQualitySample);
