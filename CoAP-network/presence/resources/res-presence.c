@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include "contiki.h"
 #include "coap-engine.h"
 #include "sys/log.h"
 #include "dev/leds.h"
+#include "sys/node-id.h"
 #include <time.h>
 
 #define LOG_MODULE "presence-sensor"
@@ -84,7 +86,7 @@ static void presence_get_handler(coap_message_t *request, coap_message_t *respon
 static void presence_put_handler(coap_message_t *request, coap_message_t *response, uint8_t *buffer, uint16_t preferred_size, int32_t *offset)
 {
 	size_t len = 0;
-    	const uint8_t* payload = NULL;
+    const uint8_t* payload = NULL;
   	if((len = coap_get_payload(request, &payload))) 
 	{
 		int new_value = atoi((char*)payload); // new_value >= 0 for constraint

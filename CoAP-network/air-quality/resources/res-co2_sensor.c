@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 #include<time.h>
+#include <stdint.h>
 #include "contiki.h"
 #include "coap-engine.h"
 #include "dev/leds.h"
+#include "sys/node-id.h"
 
 #include "global_variables.h"
 
