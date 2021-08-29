@@ -183,7 +183,7 @@ public class MQTTHandler implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-        System.out.println("Message correctly delivered");
+        logger.logInfo("Message correctly delivered");
     }
 
     public HumidityCollector getHumidityCollector() {

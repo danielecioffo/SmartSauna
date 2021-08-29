@@ -66,4 +66,9 @@ public class Logger {
     {
         log("PRESENCE", message);
     }
+
+    public void logInfo (String message)
+    {
+        log("INFO", message);
+    }
 }

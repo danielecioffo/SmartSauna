@@ -23,10 +23,15 @@ cd contiki-ng/examples/temperature/
 make TARGET=nrf52840 BOARD=dongle temperature-device.dfu-upload PORT=/dev/ttyACM23
 make login TARGET=nrf52840 BOARD=dongle PORT=/dev/ttyACM23
 
+
+
 Collector:
 
 sudo systemctl stop mosquitto.service
 sudo ssh -L 1883:127.0.0.1:1883 -p 2022 -i ~/key user@iot.dii.unipi.it
+cd Documents/SmartSauna/SmartSaunaCollector/
+mvn install
+java -jar target/SmartSaunaCollector-1.0-SNAPSHOT.jar 
 
 
 Per testare:
