@@ -414,13 +414,42 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  UNIX_TIMESTAMP(timestamp) AS \"time\",\n  concentration\nFROM air_quality\nWHERE\n  $__timeFilter(timestamp)\nORDER BY timestamp",
+          "rawSql": "SELECT\n  UNIX_TIMESTAMP(timestamp) AS \"time\",\n  concentration\nFROM air_quality\nWHERE\n  $__timeFilter(timestamp) \n  AND node = 2\nORDER BY timestamp",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
                   "concentration"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "air_quality",
+          "timeColumn": "timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  UNIX_TIMESTAMP(timestamp) AS \"time\",\n  concentration\nFROM air_quality\nWHERE\n  $__timeFilter(timestamp) \n  AND node = 3\nORDER BY timestamp",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "id"
                 ],
                 "type": "column"
               }
@@ -444,7 +473,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 27,
   "style": "dark",
   "tags": [],
@@ -452,12 +481,12 @@
     "list": []
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "SmartSauna",
   "uid": "orZcXV4nz",
-  "version": 10
+  "version": 12
 }
