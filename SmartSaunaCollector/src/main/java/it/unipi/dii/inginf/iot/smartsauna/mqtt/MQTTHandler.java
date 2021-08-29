@@ -1,6 +1,7 @@
 package it.unipi.dii.inginf.iot.smartsauna.mqtt;
 
 import com.google.gson.Gson;
+import it.unipi.dii.inginf.iot.smartsauna.log.Logger;
 import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
 import it.unipi.dii.inginf.iot.smartsauna.model.TemperatureSample;
 import it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.humidity.HumidityCollector;
@@ -19,9 +20,12 @@ public class MQTTHandler implements MqttCallback {
     private HumidityCollector humidityCollector;
     private TemperatureCollector temperatureCollector;
 
+    private Logger logger;
+
     public MQTTHandler ()
     {
         parser = new Gson();
+        logger = Logger.getInstance();
         humidityCollector = new HumidityCollector();
         temperatureCollector = new TemperatureCollector();
         do {
@@ -103,35 +107,35 @@ public class MQTTHandler implements MqttCallback {
             {
                 if (!humidityCollector.getLastCommand().equals(humidityCollector.INC))
                 {
-                    System.out.println("[HUMIDITY] Average level of Humidity too low: " + newAverage + "%, increase it");
+                    logger.logHumidity("Average level of Humidity too low: " + newAverage + "%, increase it");
                     publishMessage(humidityCollector.HUMIDIFIER_TOPIC, humidityCollector.INC);
                     humidityCollector.setLastCommand(humidityCollector.INC);
                 }
                 else
-                    System.out.println("[HUMIDITY] Average level of Humidity too low: " + newAverage + "%, but is increasing");
+                    logger.logHumidity("Average level of Humidity too low: " + newAverage + "%, but is increasing");
             }
             else if (newAverage > (humidityCollector.getUpperBoundHumidity() - (humidityCollector.getUpperBoundHumidity() - midRange)/2))
             {
                 if (!humidityCollector.getLastCommand().equals(humidityCollector.DEC))
                 {
-                    System.out.println("[HUMIDITY] Average level of Humidity too high: " + newAverage + "%, decrease it");
+                    logger.logHumidity("Average level of Humidity too high: " + newAverage + "%, decrease it");
                     publishMessage(humidityCollector.HUMIDIFIER_TOPIC, humidityCollector.DEC);
                     humidityCollector.setLastCommand(humidityCollector.DEC);
                 }
                 else
-                    System.out.println("[HUMIDITY] Average level of Humidity too high: " + newAverage + "%, but is decreasing");
+                    logger.logHumidity("Average level of Humidity too high: " + newAverage + "%, but is decreasing");
             }
             else
             {
                 if (!humidityCollector.getLastCommand().equals(humidityCollector.OFF))
                 {
-                    System.out.println("[HUMIDITY] Correct average humidity level: " + newAverage + "%, switch off the humidifier/dehumidifier");
+                    logger.logHumidity("Correct average humidity level: " + newAverage + "%, switch off the humidifier/dehumidifier");
                     publishMessage(humidityCollector.HUMIDIFIER_TOPIC, humidityCollector.OFF);
                     humidityCollector.setLastCommand(humidityCollector.OFF);
                 }
                 else
                 {
-                    System.out.println("[HUMIDITY] Correct average humidity level: " + newAverage + "%");
+                    logger.logHumidity("Correct average humidity level: " + newAverage + "%");
                 }
             }
         }
@@ -145,34 +149,34 @@ public class MQTTHandler implements MqttCallback {
             {
                 if (!temperatureCollector.getLastCommand().equals(temperatureCollector.INC))
                 {
-                    System.out.println("[TEMPERATURE] Average level of temperature too low: " + newAverage + "°C, increase it");
+                    logger.logTemperature("Average level of temperature too low: " + newAverage + "°C, increase it");
                     publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.INC);
                     temperatureCollector.setLastCommand(temperatureCollector.INC);
                 }
                 else
-                    System.out.println("[TEMPERATURE] Average level of temperature too low: " + newAverage + "°C, but is increasing");
+                    logger.logTemperature("Average level of temperature too low: " + newAverage + "°C, but is increasing");
             }
             else if (newAverage > (temperatureCollector.getUpperBoundTemperature() - (temperatureCollector.getUpperBoundTemperature() - midRange)/2))
             {
                 if (!temperatureCollector.getLastCommand().equals(temperatureCollector.DEC))
                 {
-                    System.out.println("[TEMPERATURE] Average level of temperature too high: " + newAverage + "°C, decrease it");
+                    logger.logTemperature("Average level of temperature too high: " + newAverage + "°C, decrease it");
                     publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.DEC);
                     temperatureCollector.setLastCommand(temperatureCollector.DEC);
                 }
                 else
-                    System.out.println("[TEMPERATURE] Average level of temperature too high: " + newAverage + "°C, but is decreasing");
+                    logger.logTemperature("Average level of temperature too high: " + newAverage + "°C, but is decreasing");
             }
             else
             {
                 if (!temperatureCollector.getLastCommand().equals(temperatureCollector.OFF))
                 {
-                    System.out.println("[TEMPERATURE] Correct average temperature level: " + newAverage +"°C, switch off the AC");
+                    logger.logTemperature("Correct average temperature level: " + newAverage +"°C, switch off the AC");
                     publishMessage(temperatureCollector.AC_TOPIC, temperatureCollector.OFF);
                     temperatureCollector.setLastCommand(temperatureCollector.OFF);
                 }
                 else
-                    System.out.println("[TEMPERATURE] Correct average temperature level: " + newAverage + "°C");
+                    logger.logTemperature("Correct average temperature level: " + newAverage + "°C");
             }
         }
     }

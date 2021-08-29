@@ -37,5 +37,8 @@ MySQL:
 mysql -u root -proot
 use smart_sauna
 
+Per esportare DB:
+mysqldump -u root -proot smart_sauna > database.sql
+
 
 

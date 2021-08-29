@@ -2,6 +2,7 @@ package it.unipi.dii.inginf.iot.smartsauna.coap.devices.airquality;
 
 import com.google.gson.Gson;
 import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
+import it.unipi.dii.inginf.iot.smartsauna.log.Logger;
 import it.unipi.dii.inginf.iot.smartsauna.model.AirQualitySample;
 import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 import org.eclipse.californium.core.CoapClient;
@@ -24,12 +25,14 @@ public class AirQuality {
     private boolean ventilationOn = false;
 
     private Gson parser;
+    private Logger logger;
 
     public AirQuality() {
         co2Level = new AtomicInteger(300);
         ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
         upperBound = new AtomicInteger(configurationParameters.getUpperBoundAirQuality());
         parser = new Gson();
+        logger = Logger.getInstance();
     }
 
     public void registerAirQuality(String ip) {
@@ -54,7 +57,7 @@ public class AirQuality {
                 }
 
                 if(!ventilationOn && co2Level.get() > upperBound.get()) {
-                    System.out.print("\n[AIR QUALITY] CO2 level is HIGH, the ventilation system is switched ON\n>");
+                    logger.logAirQuality("CO2 level is HIGH, the ventilation system is switched ON");
                     for (CoapClient clientVentilationSystem: clientVentilationSystemList) {
                         ventilationSystemSwitch(clientVentilationSystem,true);
                     }
@@ -64,7 +67,7 @@ public class AirQuality {
                 // We don't turn off the ventilation as soon as the value is lower than the upper bound,
                 // but we leave a margin so that we don't have to turn on the system again right away
                 if (ventilationOn && co2Level.get()  < upperBound.get()*0.7) {
-                    System.out.print("\n[AIR QUALITY] CO2 level is now fine. Switch OFF the ventilation system\n>");
+                    logger.logAirQuality("CO2 level is now fine. Switch OFF the ventilation system");
                     for (CoapClient clientVentilationSystem: clientVentilationSystemList) {
                         ventilationSystemSwitch(clientVentilationSystem,false);
                     }

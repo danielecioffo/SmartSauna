@@ -3,6 +3,7 @@ package it.unipi.dii.inginf.iot.smartsauna.coap.devices.presence;
 import com.google.gson.Gson;
 import it.unipi.dii.inginf.iot.smartsauna.coap.devices.light.Light;
 import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
+import it.unipi.dii.inginf.iot.smartsauna.log.Logger;
 import it.unipi.dii.inginf.iot.smartsauna.model.PresenceSample;
 import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 import org.eclipse.californium.core.CoapClient;
@@ -24,12 +25,14 @@ public class PresenceSensor {
     private boolean full = false;
 
     private Gson parser;
+    private Logger logger;
 
     public PresenceSensor() {
         numberOfPeople = new AtomicInteger(0);
         ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
         maxNumberOfPeople = new AtomicInteger(configurationParameters.getMaxNumberOfPeople());
         parser = new Gson();
+        logger = Logger.getInstance();
     }
 
     public void registerPresenceSensor(String ip) {
@@ -50,7 +53,7 @@ public class PresenceSensor {
 
                 if(numberOfPeople.get() > 0 && !lightOn) {
                     if(light != null) {
-                        System.out.print("\n[PRESENCE] There are people in the sauna, the light is switched ON\n>");
+                        logger.logPresence("There are people in the sauna, the light is switched ON");
                         light.lightSwitch(true);
                         lightOn = true;
                     }
@@ -58,19 +61,19 @@ public class PresenceSensor {
 
                 if(numberOfPeople.get() == 0 && lightOn) {
                     if(light != null) {
-                        System.out.print("\n[PRESENCE] The sauna is empty, the light is switched OFF\n>");
+                        logger.logPresence("The sauna is empty, the light is switched OFF");
                         light.lightSwitch(false);
                         lightOn = false;
                     }
                 }
 
                 if(!full && numberOfPeople.get() >= maxNumberOfPeople.get()) {
-                    System.out.print("\n[PRESENCE] The sauna is FULL, it is not possible to enter\n>");
+                    logger.logPresence("The sauna is FULL, it is not possible to enter");
                     full = true;
                 }
 
                 if(full && numberOfPeople.get() != maxNumberOfPeople.get()) {
-                    System.out.print("\n[PRESENCE] The sauna is no longer full, you can enter now\n>");
+                    logger.logPresence("The sauna is no longer full, you can enter now");
                     full = false;
                 }
             }
