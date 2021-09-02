@@ -42,6 +42,9 @@ public class MQTTHandler implements MqttCallback {
         }while(!mqttClient.isConnected());
     }
 
+    /**
+     * This function is used to try to connect to the broker
+     */
     private void connectToBroker () throws MqttException {
         mqttClient.connect();
         mqttClient.subscribe(humidityCollector.HUMIDITY_TOPIC);

@@ -29,6 +29,7 @@ Collector:
 
 sudo systemctl stop mosquitto.service
 sudo ssh -L 1883:127.0.0.1:1883 -p 2022 -i ~/key user@iot.dii.unipi.it
+
 cd Documents/SmartSauna/SmartSaunaCollector/
 mvn install
 java -jar target/SmartSaunaCollector-1.0-SNAPSHOT.jar 
@@ -43,7 +44,7 @@ mysql -u root -proot
 use smart_sauna
 
 Per esportare DB:
-mysqldump -u root -proot smart_sauna > database.sql
+mysqldump -u root -proot smart_sauna > dump.sql
 
 
 

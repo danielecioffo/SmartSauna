@@ -3,11 +3,8 @@ package it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.humidity;
 import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
 import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
 import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
-import sun.security.krb5.Config;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class HumidityCollector {
     public final String HUMIDITY_TOPIC = "humidity";

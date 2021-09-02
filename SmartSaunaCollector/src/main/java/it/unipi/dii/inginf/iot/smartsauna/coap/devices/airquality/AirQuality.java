@@ -57,7 +57,7 @@ public class AirQuality {
                 }
 
                 if(!ventilationOn && co2Level.get() > upperBound.get()) {
-                    logger.logAirQuality("CO2 level is HIGH: " + co2Level.get() + ", the ventilation system is switched ON");
+                    logger.logAirQuality("CO2 level is HIGH: " + co2Level.get() + " ppm, the ventilation system is switched ON");
                     for (CoapClient clientVentilationSystem: clientVentilationSystemList) {
                         ventilationSystemSwitch(clientVentilationSystem,true);
                     }
@@ -67,7 +67,7 @@ public class AirQuality {
                 // We don't turn off the ventilation as soon as the value is lower than the upper bound,
                 // but we leave a margin so that we don't have to turn on the system again right away
                 else if (ventilationOn && co2Level.get()  < upperBound.get()*0.7) {
-                    logger.logAirQuality("CO2 level is now fine: " + co2Level.get() + ". Switch OFF the ventilation system");
+                    logger.logAirQuality("CO2 level is now fine: " + co2Level.get() + " ppm. Switch OFF the ventilation system");
                     for (CoapClient clientVentilationSystem: clientVentilationSystemList) {
                         ventilationSystemSwitch(clientVentilationSystem,false);
                     }
@@ -76,7 +76,7 @@ public class AirQuality {
 
                 else
                 {
-                    logger.logAirQuality("C02 level is fine: " + co2Level.get());
+                    logger.logAirQuality("C02 level is fine: " + co2Level.get() + " ppm");
                 }
             }
 

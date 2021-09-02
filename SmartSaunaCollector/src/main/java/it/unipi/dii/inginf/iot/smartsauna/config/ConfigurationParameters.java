@@ -54,7 +54,7 @@ public class ConfigurationParameters {
     private static ConfigurationParameters readConfigurationParameters() {
         if (validConfigurationParameters()) {
             XStream xs = new XStream();
-	    xs.addPermission(AnyTypePermission.ANY);
+	        xs.addPermission(AnyTypePermission.ANY);
 
             String text = null;
             try {
