@@ -12,7 +12,9 @@ import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AirQuality {
@@ -21,6 +23,7 @@ public class AirQuality {
     private List<CoapObserveRelation> observeCO2List = new ArrayList<>();
 
     private AtomicInteger co2Level;
+    private Map<Integer, AirQualitySample> lastAirQualitySamples;
     private AtomicInteger upperBound;
     private boolean ventilationOn = false;
 
@@ -29,6 +32,7 @@ public class AirQuality {
 
     public AirQuality() {
         co2Level = new AtomicInteger(300);
+        lastAirQualitySamples = new HashMap<>();
         ConfigurationParameters configurationParameters = ConfigurationParameters.getInstance();
         upperBound = new AtomicInteger(configurationParameters.getUpperBoundAirQuality());
         parser = new Gson();
@@ -50,8 +54,8 @@ public class AirQuality {
                 try {
                     AirQualitySample airQualitySample = parser.fromJson(responseString, AirQualitySample.class);
                     DBDriver.getInstance().insertAirQualitySample(airQualitySample);
-                    int average = (co2Level.get()*(clientCO2SensorList.size() - 1) + airQualitySample.getConcentration())/(clientCO2SensorList.size());
-                    co2Level.set(average);
+                    lastAirQualitySamples.put(airQualitySample.getNode(), airQualitySample);
+                    computeAverage();
                 } catch (Exception e) {
                     System.out.print("\n[ERROR] The CO2 sensor gave non-significant data\n>");
                 }
@@ -87,6 +91,15 @@ public class AirQuality {
         });
 
         observeCO2List.add(newObserveCO2);
+    }
+
+    private void computeAverage() {
+        int size = lastAirQualitySamples.size();
+        int sum = lastAirQualitySamples.values().stream()
+                .map(AirQualitySample::getConcentration)
+                .reduce(0, Integer::sum);
+
+        co2Level.set(sum/size);
     }
 
     public void unregisterAirQuality(String ip) {

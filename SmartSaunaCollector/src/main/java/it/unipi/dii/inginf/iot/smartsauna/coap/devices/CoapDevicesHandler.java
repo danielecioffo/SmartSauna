@@ -68,7 +68,4 @@ public class CoapDevicesHandler {
     public void setCO2UpperBound(int upperBound) {
         airQuality.setUpperBound(upperBound);
     }
-
-
-
 }
