@@ -25,7 +25,8 @@ build/cooja/obj/res-co2_sensor.o: resources/res-co2_sensor.c \
  ../../os/net/app-layer/coap/coap-separate.h \
  ../../os/net/app-layer/coap/coap-observe-client.h ../../os/dev/leds.h \
  ../../os/dev/gpio-hal.h ../../arch/platform/cooja/./dev/gpio-hal-arch.h \
- global_variables.h ../../os/sys/log.h ../../os/sys/log-conf.h
+ ../../os/sys/node-id.h global_variables.h ../../os/sys/log.h \
+ ../../os/sys/log-conf.h
 resources/res-co2_sensor.c :
  ../../os/net/app-layer/coap/module-macros.h ../../os/contiki.h :
  ../../arch/platform/cooja/./contiki-conf.h project-conf.h :
@@ -53,4 +54,5 @@ resources/res-co2_sensor.c :
  ../../os/net/app-layer/coap/coap-separate.h :
  ../../os/net/app-layer/coap/coap-observe-client.h ../../os/dev/leds.h :
  ../../os/dev/gpio-hal.h ../../arch/platform/cooja/./dev/gpio-hal-arch.h :
- global_variables.h ../../os/sys/log.h ../../os/sys/log-conf.h :
+ ../../os/sys/node-id.h global_variables.h ../../os/sys/log.h :
+ ../../os/sys/log-conf.h :
