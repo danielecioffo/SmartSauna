@@ -5,6 +5,7 @@ import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
 import it.unipi.dii.inginf.iot.smartsauna.model.TemperatureSample;
 import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,8 +36,12 @@ public class TemperatureCollector {
      */
     public void addTemperatureSample (TemperatureSample temperatureSample)
     {
+        temperatureSample.setTimestamp(new Timestamp(System.currentTimeMillis()));
         lastTemperatureSamples.put(temperatureSample.getNode(), temperatureSample);
         DBDriver.getInstance().insertTemperatureSample(temperatureSample);
+
+        // remove old samples from the lastTemperatureSamples map
+        lastTemperatureSamples.entrySet().removeIf(entry -> !entry.getValue().isValid());
     }
 
     /**

@@ -11,6 +11,7 @@ import org.eclipse.californium.core.CoapObserveRelation;
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,10 @@ public class AirQuality {
                 try {
                     AirQualitySample airQualitySample = parser.fromJson(responseString, AirQualitySample.class);
                     DBDriver.getInstance().insertAirQualitySample(airQualitySample);
+                    airQualitySample.setTimestamp(new Timestamp(System.currentTimeMillis()));
                     lastAirQualitySamples.put(airQualitySample.getNode(), airQualitySample);
+                    // remove old samples from the lastAirQualitySamples map
+                    lastAirQualitySamples.entrySet().removeIf(entry -> !entry.getValue().isValid());
                     computeAverage();
                 } catch (Exception e) {
                     System.out.print("\n[ERROR] The CO2 sensor gave non-significant data\n>");

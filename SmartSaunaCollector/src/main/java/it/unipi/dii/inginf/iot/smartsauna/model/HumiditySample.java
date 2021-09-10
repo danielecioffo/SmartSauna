@@ -16,7 +16,7 @@ public class HumiditySample {
     }
 
     /**
-     * Function used to check if the sample is valid (if is related to a measure done in the last 30sec, and not an old sample)
+     * Function used to check if the sample is valid (if it is related to a measure done in the last 30sec)
      * @return  true if the timestamp is greater than 30 seconds ago, otherwise false
      */
     public boolean isValid ()

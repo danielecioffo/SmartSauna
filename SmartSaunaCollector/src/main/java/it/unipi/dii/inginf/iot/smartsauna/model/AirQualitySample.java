@@ -1,13 +1,33 @@
 package it.unipi.dii.inginf.iot.smartsauna.model;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 public class AirQualitySample {
     private int node; // Node ID
     private int concentration;
 
+    private Timestamp timestamp; // set by the collector
 
-    public AirQualitySample(int node, int concentration) {
+
+    public AirQualitySample(int node, int concentration, Timestamp timestamp) {
         this.node = node;
         this.concentration = concentration;
+        this.timestamp = timestamp;
+    }
+
+    /**
+     * Function used to check if the sample is valid (if it has been done in the last 30sec)
+     * @return  true if the timestamp is greater than 30 seconds ago, otherwise false
+     */
+    public boolean isValid ()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.SECOND, -30); // -30 seconds
+        Timestamp thirtySecondsAgo = new Timestamp(calendar.getTime().getTime());
+        return timestamp.after(thirtySecondsAgo);
     }
 
 
@@ -27,11 +47,20 @@ public class AirQualitySample {
         this.concentration = concentration;
     }
 
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public String toString() {
         return "AirQualitySample{" +
                 "node=" + node +
-                ", co2_concentration=" + concentration +
+                ", concentration=" + concentration +
+                ", timestamp=" + timestamp +
                 '}';
     }
 }
