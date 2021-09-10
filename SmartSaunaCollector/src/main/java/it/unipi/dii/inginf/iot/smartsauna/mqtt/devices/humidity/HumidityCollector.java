@@ -3,6 +3,8 @@ package it.unipi.dii.inginf.iot.smartsauna.mqtt.devices.humidity;
 import it.unipi.dii.inginf.iot.smartsauna.config.ConfigurationParameters;
 import it.unipi.dii.inginf.iot.smartsauna.model.HumiditySample;
 import it.unipi.dii.inginf.iot.smartsauna.persistence.DBDriver;
+
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +34,12 @@ public class HumidityCollector {
      */
     public void addHumiditySample (HumiditySample humiditySample)
     {
+        humiditySample.setTimestamp(new Timestamp(System.currentTimeMillis()));
         lastHumiditySamples.put(humiditySample.getNode(), humiditySample);
         DBDriver.getInstance().insertHumiditySample(humiditySample);
+
+        // remove old samples from the lastHumiditySamples map
+        lastHumiditySamples.entrySet().removeIf(entry -> !entry.getValue().isValid());
     }
 
     /**

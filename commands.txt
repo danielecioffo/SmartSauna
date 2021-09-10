@@ -35,15 +35,18 @@ mvn install
 java -jar target/SmartSaunaCollector-1.0-SNAPSHOT.jar 
 
 
-Per testare:
+To test the broker:
 mosquitto_sub -h fd00::1 -t humidity
 mosquitto_pub -h fd00::1 -t humidifier -m INC
+
+To see the device connected to the Border Router:
+wget http://[fd00::f6ce:36b4:3353:18c9]
 
 MySQL:
 mysql -u root -proot
 use smart_sauna
 
-Per esportare DB:
+To export DB:
 mysqldump -u root -proot smart_sauna > dump.sql
 
 
