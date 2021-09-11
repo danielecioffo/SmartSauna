@@ -3,6 +3,7 @@ CoAP Network:
 cd contiki-ng/examples/rpl-border-router/
 make TARGET=cooja connect-router-cooja
 
+
 MQTT network:
 
 sudo ssh -i ~/key -p 2022 user@iot.dii.unipi.it
@@ -24,7 +25,6 @@ make TARGET=nrf52840 BOARD=dongle temperature-device.dfu-upload PORT=/dev/ttyACM
 make login TARGET=nrf52840 BOARD=dongle PORT=/dev/ttyACM23
 
 
-
 Collector:
 
 sudo systemctl stop mosquitto.service
@@ -35,11 +35,12 @@ mvn install
 java -jar target/SmartSaunaCollector-1.0-SNAPSHOT.jar 
 
 
+/* *********************************************************************** */
 To test the broker:
 mosquitto_sub -h fd00::1 -t humidity
 mosquitto_pub -h fd00::1 -t humidifier -m INC
 
-To see the device connected to the Border Router:
+To see the devices connected to the Border Router:
 wget http://[fd00::f6ce:36b4:3353:18c9]
 
 MySQL:
